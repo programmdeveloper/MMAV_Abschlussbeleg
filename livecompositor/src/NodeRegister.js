@@ -1,5 +1,6 @@
 //IMPORT NODES
 import { OutputNode } from "./Nodes/OutputNode";
+import { RandomNoiseNode } from "./Nodes/RandomNoise";
 
 export default class NodeRegister {
     constructor() {
@@ -10,6 +11,7 @@ export default class NodeRegister {
         this.LiteGraph.clearRegisteredTypes();
         //PUT NODES HERE TO REGISTER THEM AUTOMATICALLY
         this.LiteGraph.registerNodeType("output/OutputNode", OutputNode);
+        this.LiteGraph.registerNodeType("noise/RandomNoise", RandomNoiseNode);
     }
 
     getLiteGraph() {
