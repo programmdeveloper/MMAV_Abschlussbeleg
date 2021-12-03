@@ -1,9 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
+import NodeGraph from './Components/NodeGraph';
 
 function App() {
   return (
     <div className="App">
+      <NodeGraph />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
