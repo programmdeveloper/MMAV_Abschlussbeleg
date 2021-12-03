@@ -1,11 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
 import NodeGraph from './Components/NodeGraph';
+import OutputView from './Components/OutputView';
 
 function App() {
   return (
     <div className="App">
       <NodeGraph />
+      <OutputView />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
