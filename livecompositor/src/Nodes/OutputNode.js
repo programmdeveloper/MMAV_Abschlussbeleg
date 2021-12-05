@@ -24,8 +24,14 @@ OutputNode.prototype.onExecute = function () {
         }
 
         if(inputPixelArray != undefined) {
-            for(let i=0; i< inputPixelArray.length;i++) {
-                outputPixelArray.data[i] = inputPixelArray[i]
+            if(inputPixelArray.length == undefined) {
+                for (let i = 0; i < inputPixelArray.data.length; i++) {
+                    outputPixelArray.data[i] = inputPixelArray.data[i]
+                }
+            } else {
+                for(let i=0; i< inputPixelArray.length;i++) {
+                    outputPixelArray.data[i] = inputPixelArray[i]
+                }
             }
         }
         
