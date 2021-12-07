@@ -5,6 +5,15 @@ export function OutputNode() {
 
 OutputNode.title = "Output";
 
+OutputNode.prototype.onDrawForeground = function (ctx, graphcanvas) {
+    if (this.flags.collapsed)
+        return;
+    ctx.save();
+    ctx.fillStyle = "#228B22";
+    ctx.fillRect(0, 0, this.size[0], this.size[1]);
+    ctx.restore();
+}
+
 OutputNode.prototype.onExecute = function () {
     var outputCanvas = document.getElementById('main-output-view');
     var outputCanvasContext = outputCanvas.getContext('2d');
