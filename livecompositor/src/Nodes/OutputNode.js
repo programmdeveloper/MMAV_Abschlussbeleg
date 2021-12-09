@@ -1,4 +1,4 @@
-import { ZOOMFACTOR } from "../Components/OutputView";
+import { ZOOMFACTOR, OFFSET_X, OFFSET_Y } from "../Components/OutputView";
 
 export function OutputNode() {
     this.addInput("Out", "array");
@@ -17,20 +17,33 @@ OutputNode.prototype.onDrawForeground = function (ctx, graphcanvas) {
 }
 
 OutputNode.prototype.onExecute = function () {
-    console.log(ZOOMFACTOR);
     var outputCanvas = document.getElementById('main-output-view');
     var outputCanvasContext = outputCanvas.getContext('2d');
     var width = outputCanvas.width;
     var height = outputCanvas.height;
-    var outputPixelArray = outputCanvasContext.createImageData(width, height);
 
-    //DEFAULT PREVIEW
-    outputCanvasContext.fillStyle = "black"
-    outputCanvasContext.fillRect(0, 0, width, height);
-
+    //INPUT
     var inputPixelArray = this.getInputData(0);
+    try {
+        var inputWidth = inputPixelArray.width;
+        var inputHeight = inputPixelArray.height;
+    } catch {
+        var inputWidth = 720;
+        var inputHeight = 360;
+    }
+
+    //NEW CANVAS FOR UNSCALED IMAGE (WILL BE RENDERED IN OUTPUT CANVAS)
+    var scaleCanvas = document.createElement('canvas')
+    scaleCanvas.width = inputWidth
+    scaleCanvas.height = inputHeight
+    let scaleCanvasCtx = scaleCanvas.getContext("2d");
+
+    var outputPixelArray = scaleCanvasCtx.createImageData(inputWidth, inputHeight);
 
     if (this.prevPixelArray !== inputPixelArray) {
+
+        outputCanvasContext.fillStyle = "black"
+        outputCanvasContext.fillRect(0, 0, width, height);
 
         //COPY INPUT PIXEL ARRAY TO OUTPUT
         if(inputPixelArray != undefined) {
@@ -45,26 +58,26 @@ OutputNode.prototype.onExecute = function () {
             }
         }
 
-        let unscaledImage = outputPixelArray
-        var scaleCanvas = document.createElement('canvas')
-        scaleCanvas.width = width
-        scaleCanvas.height = height
+        scaleCanvasCtx.putImageData(outputPixelArray, 0, 0);
 
         //BORDER AROUND SCALED IMAGE
-        let scaleCanvasCtx = scaleCanvas.getContext("2d");
-        scaleCanvasCtx.putImageData(unscaledImage, 0, 0);
-        scaleCanvasCtx.lineWidth = 2;
+        scaleCanvasCtx.lineWidth = 3;
         scaleCanvasCtx.strokeStyle = "#FF0000";
-        scaleCanvasCtx.strokeRect(0, 0, width, height);
+        scaleCanvasCtx.strokeRect(0, 0, inputWidth, inputHeight);
 
-        //SCALE AND DRAW
-        outputCanvasContext.scale(ZOOMFACTOR, ZOOMFACTOR)
-        outputCanvasContext.translate(width * ZOOMFACTOR, height * ZOOMFACTOR)
-        
+        //SCALE UNSCALED IMAGE AND DRAW IN OUTPUT
+        var offsetX = (width - width * ((inputWidth * ZOOMFACTOR)/ width)) * 0.5
+        var offsetY = (height - height * ((inputHeight * ZOOMFACTOR) / height)) * 0.5
+
+        outputCanvasContext.translate(offsetX + OFFSET_X, offsetY + OFFSET_Y)
+        outputCanvasContext.scale(ZOOMFACTOR,ZOOMFACTOR)
         outputCanvasContext.drawImage(scaleCanvas, 0, 0);
+        //RESOLUTION OVERLAY
+        outputCanvasContext.font = "30px Consolas";
+        outputCanvasContext.fillStyle = "grey"
+        outputCanvasContext.fillText(inputWidth + "x" + inputHeight, 0, inputHeight + 30);
+        outputCanvasContext.scale(1 / ZOOMFACTOR, 1 / ZOOMFACTOR)
+        outputCanvasContext.translate(-(offsetX + OFFSET_X), -(offsetY + OFFSET_Y))
         this.prevPixelArray = inputPixelArray
-
-        outputCanvasContext.translate(width * -ZOOMFACTOR, height * -ZOOMFACTOR)
-        outputCanvasContext.scale(1/ZOOMFACTOR, 1/ZOOMFACTOR)
     }
 }
