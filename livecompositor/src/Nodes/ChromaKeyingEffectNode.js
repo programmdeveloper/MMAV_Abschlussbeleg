@@ -1,19 +1,20 @@
 export function ChromaKeyingEffectNode() {
-  this.addInput("Out", "array");
+  this.addInput("In", "array");
   this.addOutput("Out", "array");
 }
 
 ChromaKeyingEffectNode.title = "ChromaKeyingEffect";
 
 ChromaKeyingEffectNode.prototype.onDrawForeground = function (ctx, graphcanvas) {
-  if (this.flags.collpased) return;
+  if (this.flags.collapsed) return;
   ctx.save();
   ctx.fillStyle = "#75c32c";
   ctx.fillRect(0, 0, this.size[0], this.size[1]);
-  ctx.restore;
+  ctx.restore();
 };
 
 ChromaKeyingEffectNode.prototype.onExecute = function () {
+  if (!this.getInputData(0)) return;
   var pixelArray = this.getInputData(0);
   for (let i = 0; i < pixelArray.data.length; i += 4) {
     const red = pixelArray.data[i + 0];
