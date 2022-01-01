@@ -9,12 +9,6 @@ export function ImageInputNode() {
   //this.play = this.addWidget("button", "Play/Pause", "")
   this.loop = this.addWidget("toggle", "Loop");
   this.speed = this.addWidget("slider", "Speed", 1, function () {}, { min: 0, max: 4 });
-
-  this.tmpCanvas = document.createElement("canvas");
-  this.tmpCanvas.width = 640;
-  this.tmpCanvas.height = 320;
-  this.tmpCanvas.style = "visibility: hidden;";
-  this.tmpCanvasCtx = this.tmpCanvas.getContext("2d");
 }
 
 ImageInputNode.title = "Image Input";
@@ -64,18 +58,23 @@ ImageInputNode.prototype.onExecute = function () {
   }
 
   if (this.video != null) {
+    let tmpCanvas = document.createElement("canvas");
+    tmpCanvas.width = this.video.videoWidth;
+    tmpCanvas.height = this.video.videoHeight;
+    let tmpCanvasCtx = tmpCanvas.getContext("2d");
+
     this.video.playbackRate = this.speed.value;
-    if (this.video.ended && this.loop.value === true) {
+    if (this.video.ended && this.loop.value == true) {
       this.video.play();
     }
 
     if (this.video.readyState > 0) {
-      this.tmpCanvasCtx.drawImage(this.video, 0, 0, this.tmpCanvas.width, this.tmpCanvas.height);
-      var outputPixelArray = this.tmpCanvasCtx.getImageData(
+      tmpCanvasCtx.drawImage(this.video, 0, 0, this.video.videoWidth, this.video.videoHeight);
+      var outputPixelArray = tmpCanvasCtx.getImageData(
         0,
         0,
-        this.tmpCanvas.width,
-        this.tmpCanvas.height
+        this.video.videoWidth,
+        this.video.videoHeight
       );
       this.setOutputData(0, outputPixelArray);
     }

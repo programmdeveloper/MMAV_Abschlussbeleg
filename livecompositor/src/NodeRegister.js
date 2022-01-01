@@ -5,6 +5,8 @@ import { ImageInputNode } from "./Nodes/ImageInputNode";
 import { GrayscaleEffectNode } from "./Nodes/GrayscaleEffectNode";
 import { NegativeEffectNode } from "./Nodes/NegativeEffectNode";
 import { ChromaKeyingEffectNode } from "./Nodes/ChromaKeyingEffectNode";
+import { WebcamInputNode } from "./Nodes/WebcamInputNode";
+import { MergeNode } from "./Nodes/MergeNode";
 
 export default class NodeRegister {
   constructor() {
@@ -17,9 +19,11 @@ export default class NodeRegister {
     this.LiteGraph.registerNodeType("output/OutputNode", OutputNode);
     this.LiteGraph.registerNodeType("noise/RandomNoise", RandomNoiseNode);
     this.LiteGraph.registerNodeType("input/ImageInput", ImageInputNode);
+    this.LiteGraph.registerNodeType("input/WebcamInput", WebcamInputNode);
     this.LiteGraph.registerNodeType("effect/Grayscale", GrayscaleEffectNode);
     this.LiteGraph.registerNodeType("effect/NegativeEffect", NegativeEffectNode);
     this.LiteGraph.registerNodeType("effect/ChromaKeyingEffectNode", ChromaKeyingEffectNode);
+    this.LiteGraph.registerNodeType("merge/Merge", MergeNode);
   }
 
   getLiteGraph() {
