@@ -3,7 +3,9 @@ export function MergeNode() {
     this.addInput("B", "array");
     this.addOutput("Out", "array");
 
-    this.operation = this.addWidget("combo", "Combo", "Over", null, { values: ["Over", "Multiply", "Add", "Subtract"] });
+    this.operation = this.addWidget("combo", "Operation", "Over", null, { values: ["Over", "Multiply", "Add", "Subtract"] });
+    this.bounds = this.addWidget("combo", "Bounding Box From", "B", null, { values: ["A", "B"] });
+    this.mix = this.addWidget("slider", "Mix", 1, null, { min: 0, max: 1, step:0.1 });
 
     //NEW CANVAS FOR OUTPUT
     this.outCanvas = document.createElement('canvas')
@@ -25,9 +27,9 @@ MergeNode.prototype.mergeNormal = function (pixelArrayA, pixelArrayB) {
     
     var outPixelArray = new Uint8Array(pixelArrayA.length);
     for (let i = 0; i < pixelArrayA.length; i += 4) {
-        outPixelArray[i] = pixelArrayA[i] + pixelArrayB[i] * ((255 - pixelArrayA[i+3]) / 255)
-        outPixelArray[i + 1] = pixelArrayA[i + 1] + pixelArrayB[i + 1] * ((255 - pixelArrayA[i + 3]) / 255)
-        outPixelArray[i + 2] = pixelArrayA[i + 2] + pixelArrayB[i + 2] * ((255 - pixelArrayA[i + 3]) / 255)
+        outPixelArray[i] = pixelArrayA[i] * this.mix.value + pixelArrayB[i] * ((255 - pixelArrayA[i + 3] * this.mix.value) / 255)
+        outPixelArray[i + 1] = pixelArrayA[i + 1] * this.mix.value + pixelArrayB[i + 1] * ((255 - pixelArrayA[i + 3] * this.mix.value) / 255)
+        outPixelArray[i + 2] = pixelArrayA[i + 2] * this.mix.value + pixelArrayB[i + 2] * ((255 - pixelArrayA[i + 3] * this.mix.value) / 255)
         outPixelArray[i + 3] = pixelArrayA[i + 3] + pixelArrayB[i + 3] * ((255 - pixelArrayA[i + 3]) / 255)
     }
 
@@ -38,10 +40,10 @@ MergeNode.prototype.mergeMultiply = function (pixelArrayA, pixelArrayB) {
 
     var outPixelArray = new Uint8Array(pixelArrayA.length);
     for (let i = 0; i < pixelArrayA.length; i += 4) {
-        outPixelArray[i] = ((pixelArrayA[i]/255) * (pixelArrayB[i]/255)) * 255
-        outPixelArray[i + 1] = ((pixelArrayA[i + 1] / 255) * (pixelArrayB[i + 1] / 255)) * 255
-        outPixelArray[i + 2] = ((pixelArrayA[i + 2] / 255) * (pixelArrayB[i + 2] / 255)) * 255
-        outPixelArray[i + 3] = ((pixelArrayA[i + 3] / 255) * (pixelArrayB[i + 3] / 255)) * 255
+        outPixelArray[i] = ((pixelArrayA[i]/255) * (pixelArrayB[i]/255)) * 255 * this.mix.value
+        outPixelArray[i + 1] = ((pixelArrayA[i + 1] / 255) * (pixelArrayB[i + 1] / 255)) * 255 * this.mix.value
+        outPixelArray[i + 2] = ((pixelArrayA[i + 2] / 255) * (pixelArrayB[i + 2] / 255)) * 255 * this.mix.value
+        outPixelArray[i + 3] = ((pixelArrayA[i + 3] / 255) * (pixelArrayB[i + 3] / 255)) * 255 * this.mix.value
     }
 
     return outPixelArray;
@@ -51,10 +53,10 @@ MergeNode.prototype.mergeMultiply = function (pixelArrayA, pixelArrayB) {
 MergeNode.prototype.mergeAdd = function (pixelArrayA, pixelArrayB) {
     var outPixelArray = new Uint8Array(pixelArrayA.length);
     for (let i = 0; i < pixelArrayA.length; i += 4) {
-        outPixelArray[i] = pixelArrayA[i] + pixelArrayB[i]
-        outPixelArray[i + 1] = pixelArrayA[i + 1] + pixelArrayB[i + 1]
-        outPixelArray[i + 2] = pixelArrayA[i + 2] + pixelArrayB[i + 2]
-        outPixelArray[i + 3] = pixelArrayA[i + 3] + pixelArrayB[i + 3]
+        outPixelArray[i] = pixelArrayA[i] * this.mix.value + pixelArrayB[i]
+        outPixelArray[i + 1] = pixelArrayA[i + 1] * this.mix.value + pixelArrayB[i + 1]
+        outPixelArray[i + 2] = pixelArrayA[i + 2] * this.mix.value + pixelArrayB[i + 2]
+        outPixelArray[i + 3] = pixelArrayA[i + 3] * this.mix.value + pixelArrayB[i + 3]
     }
 
     return outPixelArray;
@@ -63,10 +65,10 @@ MergeNode.prototype.mergeAdd = function (pixelArrayA, pixelArrayB) {
 MergeNode.prototype.mergeSubtract = function (pixelArrayA, pixelArrayB) {
     var outPixelArray = new Uint8Array(pixelArrayA.length);
     for (let i = 0; i < pixelArrayA.length; i += 4) {
-        outPixelArray[i] = pixelArrayA[i] - pixelArrayB[i]
-        outPixelArray[i + 1] = pixelArrayA[i + 1] - pixelArrayB[i + 1]
-        outPixelArray[i + 2] = pixelArrayA[i + 2] - pixelArrayB[i + 2]
-        outPixelArray[i + 3] = pixelArrayA[i + 3] - pixelArrayB[i + 3]
+        outPixelArray[i] = pixelArrayA[i] * this.mix.value - pixelArrayB[i]
+        outPixelArray[i + 1] = pixelArrayA[i + 1] * this.mix.value - pixelArrayB[i + 1]
+        outPixelArray[i + 2] = pixelArrayA[i + 2] * this.mix.value - pixelArrayB[i + 2]
+        outPixelArray[i + 3] = pixelArrayA[i + 3] * this.mix.value - pixelArrayB[i + 3]
     }
 
     return outPixelArray;
@@ -92,26 +94,22 @@ MergeNode.prototype.doMerge = function (pixelArrayA, pixelArrayB) {
     return pixelArrayA;
 }
 
-MergeNode.prototype.trimPixelArray = function (pixelArray, widthsrc, heightsrc, widthdst, heightdst) {
-    var yOffset = (heightsrc - heightdst) / 2;
-    var xOffset = (widthsrc - widthdst) / 2;
-
+MergeNode.prototype.resizePixelArray = function (pixelArray, widthsrc, heightsrc, widthdst, heightdst) {
     let trimmedArray = new Uint8Array(widthdst * heightdst * 4);
+    trimmedArray.fill(0);
 
-    for(let y = 0 ; y < heightdst ; y++) {
-        for(let x = 0 ; x < widthdst; x++) {
-            let srcIndex = ((x + xOffset) * 4 + (y + yOffset) * widthsrc * 4);
-            let targetIndex = (x * 4 + y * widthdst * 4);
-            if (srcIndex >= 0) {
+    var yOffset = Math.round((heightdst - heightsrc) / 2);
+    var xOffset = Math.round((widthdst - widthsrc) / 2);
+
+    for (let y = 0; y < heightsrc; y++) {
+        for(let x = 0 ; x < widthsrc; x++) {
+            let srcIndex = (y * widthsrc + x) * 4
+            let targetIndex = ((y + yOffset) * widthdst + x + xOffset) * 4
+            if (targetIndex >= 0 && targetIndex < trimmedArray.length && 0 <= (x + xOffset) && (x + xOffset) < widthdst) {
                 trimmedArray[targetIndex] = pixelArray[srcIndex]
                 trimmedArray[targetIndex + 1] = pixelArray[srcIndex + 1]
                 trimmedArray[targetIndex + 2] = pixelArray[srcIndex + 2]
                 trimmedArray[targetIndex + 3] = pixelArray[srcIndex + 3]
-            } else {
-                trimmedArray[targetIndex] = 0
-                trimmedArray[targetIndex + 1] = 0
-                trimmedArray[targetIndex + 2] = 0
-                trimmedArray[targetIndex + 3] = 0
             }
         }
     }
@@ -126,12 +124,23 @@ MergeNode.prototype.onExecute = function () {
     var outWidth = 720;
     var outHeight = 360;
 
-    if (inputA !== null && inputA !== undefined && inputA.data.length > 0) {
-        outWidth = inputA.width;
-        outHeight = inputA.height;
-    } else if (inputB !== null && inputB !== undefined && inputB.data.length > 0) {
-        outWidth = inputB.width;
-        outHeight = inputB.height;
+    if(this.bounds.value == "A") {
+        if (inputA !== null && inputA !== undefined && inputA.data.length > 0) {
+            outWidth = inputA.width;
+            outHeight = inputA.height;
+        } else if (inputB !== null && inputB !== undefined && inputB.data.length > 0) {
+            outWidth = inputB.width;
+            outHeight = inputB.height;
+        }
+    } else {
+        if (inputB !== null && inputB !== undefined && inputB.data.length > 0) {
+            outWidth = inputB.width;
+            outHeight = inputB.height;
+        }
+        else if (inputA !== null && inputA !== undefined && inputA.data.length > 0) {
+            outWidth = inputA.width;
+            outHeight = inputA.height;
+        }       
     }
 
     var processingArrayA = new Uint8Array(outWidth * outHeight * 4);
@@ -140,7 +149,7 @@ MergeNode.prototype.onExecute = function () {
     //TRIM INPUT B SIZE
     if (inputB !== null && inputB !== undefined && inputB.data.length > 0) {
         if(inputB.width !== outWidth || inputB.height !== outHeight) {
-            processingArrayB = this.trimPixelArray(inputB.data, inputB.width, inputB.height, outWidth, outHeight)
+            processingArrayB = this.resizePixelArray(inputB.data, inputB.width, inputB.height, outWidth, outHeight)
         } else {
             processingArrayB = inputB.data
         }
@@ -149,7 +158,7 @@ MergeNode.prototype.onExecute = function () {
     //TRIM INPUT A SIZE
     if(inputA !== null && inputA !== undefined && inputA.data.length > 0) {
         if (inputA.width !== outWidth || inputA.height !== outHeight) {
-            processingArrayA = this.trimPixelArray(inputA.data, inputA.width, inputA.height, outWidth, outHeight)
+            processingArrayA = this.resizePixelArray(inputA.data, inputA.width, inputA.height, outWidth, outHeight)
         } else {
             processingArrayA = inputA.data
         }
