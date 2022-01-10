@@ -1,8 +1,13 @@
+import audioContextProvider from "../AudioContextProvider";
 
 export function ImageInputNode() {
     this.addOutput("Out", "array");
+    this.addOutput("Audio", "audioElement");
     this.video = null;
     this.prevUrl = "";
+
+    this.audioCtx = audioContextProvider.getAudioContext();
+    this.audio = null
 
     //WIDGETS
     this.url = this.addWidget("text", "URL", "");
@@ -58,10 +63,11 @@ ImageInputNode.prototype.onExecute = function () {
     if(this.video == null && this.url.value != this.prevUrl) {
         this.video = document.createElement('video');
         this.video.src = this.url.value;
-        this.video.type = "type=video/mp4";
-        this.video.muted = true;
+        //this.video.type = "type=video/mp4";
+        this.video.muted = false;
         this.prevUrl = this.url.value;
         this.video.load();
+        this.audio = this.audioCtx.createMediaElementSource(this.video);
     }
 
     if(this.video != null) {
@@ -80,5 +86,7 @@ ImageInputNode.prototype.onExecute = function () {
             var outputPixelArray = tmpCanvasCtx.getImageData(0, 0, this.video.videoWidth, this.video.videoHeight);
             this.setOutputData(0, outputPixelArray);
         }
+
+        this.setOutputData(1, this.audio);
     }
 }
