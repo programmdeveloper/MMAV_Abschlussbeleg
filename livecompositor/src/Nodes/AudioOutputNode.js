@@ -2,6 +2,7 @@ import { faPassport } from "@fortawesome/free-solid-svg-icons";
 import audioContextProvider from "../AudioContextProvider";
 import { v4 as uuidv4 } from 'uuid';
 import outRegistry from '../OutputRegistry';
+import audioMixingInstance from '../AudioMixingController';
 
 export function AudioOutputNode() {
     this.addInput("AudioOut", "audioElement");
@@ -50,8 +51,10 @@ AudioOutputNode.prototype.onRemoved = function () {
 AudioOutputNode.prototype.activeToggled = function () {
     if (this.active.value === true) {
         outRegistry.setCurrentAudioOut(this);
+        audioMixingInstance.setNodeAudioSource(this.inputAudioNode);
     } else {
         outRegistry.setCurrentAudioOut(null);
+        audioMixingInstance.setNodeAudioSource(null);
     }
 }
 
@@ -70,7 +73,6 @@ AudioOutputNode.prototype.onExecute = function () {
 
     if (!this.getInputData(0) || this.active.value == false) {
         try {
-            this.inputAudioNode.disconnect(this.audioCtx.destination);
             this.inputAudioNode = null;
         } catch {
             ;
@@ -81,6 +83,5 @@ AudioOutputNode.prototype.onExecute = function () {
 
     var inputAudioNode = this.getInputData(0);
     if(this.inputAudioNode != inputAudioNode)
-        inputAudioNode.connect(this.audioCtx.destination);
         this.inputAudioNode = inputAudioNode
 }

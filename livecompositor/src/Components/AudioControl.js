@@ -1,17 +1,7 @@
 import React, {useEffect, useState} from 'react'
+import audioMixingInstance from '../AudioMixingController'
 
 const AudioControl = () => {
-    let audioCtx = new AudioContext();
-    let out = audioCtx.destination;
-
-    const audio = new Audio("example.wav");
-    const source = audioCtx.createMediaElementSource(audio);
-    source.connect(out);
-
-    const adaptVolume = () => {
-        console.log("Volume");
-        // create gain node like in boombox example
-    }
 
     const adaptSpeed = () => {
         console.log("Speed");
@@ -22,9 +12,9 @@ const AudioControl = () => {
 
     return (
         <div>
-            <button id="playButton" onClick={() => source.start()}>Play</button>
-            <button id="pauseButton" onClick={() => source.stop()}>Pause</button>
-            <input id="volume" type="range" onChange={adaptVolume}/>
+            <button id="playButton" onClick={() => audioMixingInstance.playExternal()}>Play</button>
+            <button id="pauseButton" onClick={() => audioMixingInstance.pauseExternal()}>Pause</button>
+            <input id="volume" type="range" onChange={() => audioMixingInstance.adaptVolume(document.getElementById('volume').value)}/>
             <input id="speed" type="range" onChange={adaptSpeed}/>
         </div>
     )
