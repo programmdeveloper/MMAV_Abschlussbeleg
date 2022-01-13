@@ -5,6 +5,7 @@ import { ImageInputNode } from "./Nodes/ImageInputNode";
 import { WebcamInputNode } from "./Nodes/WebcamInputNode";
 import { MergeNode } from "./Nodes/MergeNode";
 import { AudioOutputNode } from "./Nodes/AudioOutputNode";
+import { AudioMixerNode } from "./Nodes/AudioMixerNode";
 
 export default class NodeRegister {
     constructor() {
@@ -20,6 +21,7 @@ export default class NodeRegister {
         this.LiteGraph.registerNodeType("input/ImageInput", ImageInputNode);
         this.LiteGraph.registerNodeType("input/WebcamInput", WebcamInputNode);
         this.LiteGraph.registerNodeType("merge/Merge", MergeNode);
+        this.LiteGraph.registerNodeType("merge/AudioMerge", AudioMixerNode);
     }
 
     getLiteGraph() {

@@ -71,17 +71,23 @@ AudioOutputNode.prototype.updateActiveState = function () {
 
 AudioOutputNode.prototype.onExecute = function () {
 
-    if (!this.getInputData(0) || this.active.value == false) {
-        try {
+    if(this.active.value == false) {
+        return;
+    }
+
+    if (!this.getInputData(0) && this.active.value == true) {
+        if(this.inputAudioNode != null) {
             this.inputAudioNode = null;
-        } catch {
-            ;
+            audioMixingInstance.setNodeAudioSource(null);
         }
 
         return;
     };
 
     var inputAudioNode = this.getInputData(0);
-    if(this.inputAudioNode != inputAudioNode)
+    if(this.inputAudioNode != inputAudioNode) {
         this.inputAudioNode = inputAudioNode
+        audioMixingInstance.setNodeAudioSource(this.inputAudioNode);
+    }
+
 }
