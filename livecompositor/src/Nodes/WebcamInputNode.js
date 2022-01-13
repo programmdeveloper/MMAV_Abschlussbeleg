@@ -1,9 +1,15 @@
+import audioContextProvider from "../AudioContextProvider";
+
 export function WebcamInputNode() {
     this.addOutput("Out", "array");
+    this.addOutput("Audio", "audioElement");
 
     this.camvideo = document.createElement('video');
     this.camvideo.autoplay = true;
     this.stream_ready = false;
+
+    this.audioCtx = audioContextProvider.getAudioContext();
+    this.webcamAudioNode = null;
 
     this.tmpcanvas = null;
     this.tmpcanvasctx = null;
@@ -13,14 +19,17 @@ WebcamInputNode.title = "Webcam Input";
 
 WebcamInputNode.prototype.startStream = function () {
     var camvideo = this.camvideo
+    var audioCtx = this.audioCtx
+    var webcamAudioNode = this.webcamAudioNode
     if (navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true })
+        navigator.mediaDevices.getUserMedia({ audio: true, video: true })
             .then(function (stream) {
                 if ("srcObject" in camvideo) {
                     camvideo.srcObject = stream;
                 } else {
                     camvideo.src = window.URL.createObjectURL(stream);
                 }
+                webcamAudioNode = audioCtx.createMediaStreamSource(stream);
             }).catch(function (error) {
                 console.log("Something went wrong!");
                 console.log(error);
@@ -30,9 +39,11 @@ WebcamInputNode.prototype.startStream = function () {
     this.camvideo.onloadedmetadata = function (e) {
         this.camvideo.width = this.camvideo.videoWidth;
         this.camvideo.height = this.camvideo.videoHeight;
+        this.camvideo.muted = true;
         this.tmpcanvas.width = this.camvideo.videoWidth;
         this.tmpcanvas.height = this.camvideo.videoHeight;
         this.stream_ready = true;
+        this.webcamAudioNode = webcamAudioNode;
     }.bind(this);
 };
 
@@ -69,5 +80,6 @@ WebcamInputNode.prototype.onExecute = function () {
         this.tmpcanvasctx.drawImage(this.camvideo, 0, 0, this.camvideo.videoWidth, this.camvideo.videoHeight);
         var outputPixelArray = this.tmpcanvasctx.getImageData(0, 0, this.camvideo.videoWidth, this.camvideo.videoHeight);
         this.setOutputData(0, outputPixelArray);
+        this.setOutputData(1, this.webcamAudioNode);
     }
 };
