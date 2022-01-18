@@ -31,21 +31,26 @@ class Recorder {
 
     _recorderHandleStop(event) {
         const superBuffer = new Blob(this.recordedChunks, { type: 'video/mp4' });
-        this.recordedChunks = [];
         this.blobUrl = window.URL.createObjectURL(superBuffer);
-        var link = document.createElement("a"); // Or maybe get it from the current document
-        link.href = this.blobUrl;
-        link.download = "video.webm";
-        link.innerHTML = "Click here to download the file";
-        document.body.appendChild(link);
     }
 
     startRecord() {
+        if(this.canvasToRecord === null) {
+            throw "No active output node."
+        }
+
         if(this.recording === false) {
             this.recording = true;
             var stream = this.canvasToRecord.captureStream(this.framerate)
 
-            let options = { mimeType: 'video/webm' };
+            let options = {
+                audioBitsPerSecond: 128000,
+                videoBitsPerSecond: 7500000,
+                mimeType: 'video/webm' 
+            };
+
+            this.recordedChunks = [];
+
             try {
                 this.mediaRecorder = new MediaRecorder(stream, options);
             } catch (e0) {
@@ -76,7 +81,23 @@ class Recorder {
     
     stopRecord() {
         this.recording = false;
-        this.mediaRecorder.stop()
+        try {
+            this.mediaRecorder.stop()
+        } catch {
+            ;
+        }
+    }
+
+    download() {
+        if(this.recordedChunks.length === 0) {
+            throw "No records to download."
+        }
+        var link = document.createElement("a");
+        link.href = this.blobUrl;
+        link.download = "video.webm";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
 }
