@@ -10,15 +10,16 @@ class AudioMixingController {
             //Audio Node for external Audio
             this.externalAudioSource = this.audioCtx.createMediaElementSource(this.externalAudio);
 
-            this.gainNode = this.audioCtx.createGain();
+            this.gainNodeExternal = this.audioCtx.createGain();
 
 
-            this.externalAudioSource.connect(this.gainNode);
-            this.gainNode.connect(this.out);
+            this.externalAudioSource.connect(this.gainNodeExternal);
+            this.gainNodeExternal.connect(this.out);
 
             //Audio Node from Node editor
             this.nodeEditorAudioSource = null;
-
+            this.gainNode = this.audioCtx.createGain();
+            this.gainNode.connect(this.out);
 
             AudioMixingController._instance = this;
         }
@@ -35,8 +36,8 @@ class AudioMixingController {
         document.getElementById('externalAudio').checked = false;
     }
 
-    adaptVolume(value) {
-        this.gainNode.gain.value = value;
+    adaptExternalVolume(value) {
+        this.gainNodeExternal.gain.value = value;
     }
 
     adaptSpeed(value) {
@@ -52,16 +53,29 @@ class AudioMixingController {
         }
     }
 
+    adaptNodeVolume(value) {
+        if(this.nodeEditorAudioSource !== null) {
+            this.gainNode.gain.value = value;
+        }
+    }
+
+    adaptAllVolume(value) {
+        if(this.nodeEditorAudioSource !== null) {
+            this.gainNode.gain.value = value;
+        }
+        this.gainNodeExternal.gain.value = value;
+    }
+
     setNodeAudioSource(audioNode) {
         try {
-            this.nodeEditorAudioSource.disconnect(this.out);
+            this.nodeEditorAudioSource.disconnect(this.gainNode);
         } catch {
             ;
         }
 
         this.nodeEditorAudioSource = audioNode;
         if(this.nodeEditorAudioSource !== null) {
-            this.nodeEditorAudioSource.connect(this.out);
+            this.nodeEditorAudioSource.connect(this.gainNode);
         }
     }
 }
