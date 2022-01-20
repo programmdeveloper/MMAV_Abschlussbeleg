@@ -15,8 +15,8 @@ const NodeGraph = () => {
     });
 
     return (
-        <div>
-            <canvas id='node-graph-canvas' width='1024' height='720' style={{ border: '1px solid' }}></canvas>
+        <div className="Nodegraphcanvas" id="Nodegraphcanvas">
+            <canvas id='node-graph-canvas' className='node-graph-canvas' height={window.innerHeight - 90} width={window.innerWidth / 2}></canvas>
         </div>
     )
 }
