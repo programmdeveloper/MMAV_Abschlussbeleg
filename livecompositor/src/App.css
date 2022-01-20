@@ -32,6 +32,11 @@
     flex-direction: column;
 }
 
+.Menu {
+    display: flex;
+    align-items: center;
+}
+
 .Button {
     background-color: #0000CD;
     border: none;

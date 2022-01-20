@@ -20,8 +20,10 @@ function App() {
                   <NodeGraph />
                   <div className='App-interface-output'>
                       <OutputView />
-                      <AudioExternalControl />
-                      <RecordComponent />
+                      <div className='Menu'>
+                          <AudioExternalControl />
+                          <RecordComponent />
+                      </div>
                   </div>
               </div>
 
