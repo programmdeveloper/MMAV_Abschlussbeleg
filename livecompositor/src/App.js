@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import './App.css';
 import NodeGraph from './Components/NodeGraph';
 import OutputView from './Components/OutputView';
+import RecordComponent from './Components/RecordComponent';
 import AudioExternalControl from "./Components/AudioExternalControl";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
                   <div className='App-interface-output'>
                       <OutputView />
                       <AudioExternalControl />
+                      <RecordComponent />
                   </div>
               </div>
 
