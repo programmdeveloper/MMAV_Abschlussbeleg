@@ -28,12 +28,10 @@ class AudioMixingController {
 
     playExternal() {
         this.externalAudio.play();
-        document.getElementById('externalAudio').checked = true;
     }
 
     pauseExternal() {
         this.externalAudio.pause();
-        document.getElementById('externalAudio').checked = false;
     }
 
     adaptExternalVolume(value) {
@@ -43,14 +41,6 @@ class AudioMixingController {
     adaptSpeed(value) {
         this.externalAudio.playbackRate = value;
         document.getElementById('speed').value = value;
-    }
-
-    externalActive() {
-        if (document.getElementById('externalAudio').checked === false) {
-            this.pauseExternal();
-        } else {
-            this.playExternal();
-        }
     }
 
     adaptNodeVolume(value) {
@@ -64,6 +54,24 @@ class AudioMixingController {
             this.gainNode.gain.value = value;
         }
         this.gainNodeExternal.gain.value = value;
+    }
+
+    muteExternal(value) {
+        if (document.getElementById('muteExternal').checked === false) {
+            this.gainNodeExternal.gain.value = value;
+        } else {
+            this.gainNodeExternal.gain.value = 0;
+        }
+    }
+
+    muteNode(value) {
+        if(this.nodeEditorAudioSource !== null) {
+            if (document.getElementById('muteNode').checked === false) {
+                this.gainNode.gain.value = value;
+            } else {
+                this.gainNode.gain.value = 0;
+            }
+        }
     }
 
     setNodeAudioSource(audioNode) {

@@ -13,8 +13,10 @@ const AudioExternalControl = () => {
                 <input defaultValue="1" id="allVolume" type="range" min="0" max="2" step="0.01" onChange={() => audioMixingInstance.adaptAllVolume(document.getElementById('allVolume').value)}/>
             </div>
             <input defaultValue="1" id="speed" type="range" min="0.5" max="2" step="0.01" onChange={() => audioMixingInstance.adaptSpeed(document.getElementById('speed').value)}/>
-            <input type="checkbox" id="externalAudio" onChange={() => audioMixingInstance.externalActive()}/>
-            <label htmlFor="externalAudio">external audio active</label>
+            <input type="checkbox" id="muteExternal" onChange={() => audioMixingInstance.muteExternal(document.getElementById('externalVolume').value)}/>
+            <label htmlFor="externalAudio">Mute external Audio</label>
+            <input type="checkbox" id="muteNode" onChange={() => audioMixingInstance.muteNode(document.getElementById('nodeVolume').value)}/>
+            <label htmlFor="externalAudio">Mute Node Audio</label>
         </div>
     )
 }
