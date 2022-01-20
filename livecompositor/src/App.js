@@ -7,9 +7,23 @@ import AudioExternalControl from "./Components/AudioExternalControl";
 function App() {
   return (
     <div className="App">
-        <NodeGraph />
-        <OutputView />
-        <AudioExternalControl/>
+          <div className="App">
+
+              <header className="App-header">
+                  
+                  <h2>Abschlussbeleg</h2>
+              </header>
+
+              <div className='App-interface'>
+                  <NodeGraph />
+                  <OutputView />
+                  <AudioExternalControl />
+              </div>
+
+              <footer className="App-footer">
+                  <p>Im Ramen des Abschlussbelegs Audio und Video</p>
+              </footer>
+          </div>
     </div>
   );
 }

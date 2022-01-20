@@ -69,8 +69,8 @@ const OutputView = () => {
     }, [""]);
 
     return (
-        <div>
-            <canvas id="main-output-view" width='720' height='360' style={{ border: '1px solid black' }}></canvas>
+        <div id='Mainoutputview' className='Mainoutputview'>
+            <canvas id="main-output-view" className="main-output-view" height={window.innerHeight / 2} width={window.innerWidth / 2} ></canvas>
         </div>
     )
 }
