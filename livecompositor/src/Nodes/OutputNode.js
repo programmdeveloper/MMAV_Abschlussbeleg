@@ -1,25 +1,87 @@
 import { ZOOMFACTOR, OFFSET_X, OFFSET_Y } from "../Components/OutputView";
+import { v4 as uuidv4 } from 'uuid';
+import outRegistry from '../OutputRegistry';
 
 export function OutputNode() {
-  this.addInput("Out", "array");
-  this.prevPixelArray = [];
+    this.addInput("Out", "array");
+    this.prevPixelArray = [];
+
+    this.id = uuidv4();
+
+    this.active = this.addWidget("toggle", "Active", false, this.activeToggled.bind(this));
 }
 
 OutputNode.title = "Output";
 
+OutputNode.prototype.getId = function () {
+    return this.id;
+}
+
 OutputNode.prototype.onDrawForeground = function (ctx, graphcanvas) {
-  if (this.flags.collapsed) return;
-  ctx.save();
-  ctx.fillStyle = "#228B22";
-  ctx.fillRect(0, 0, this.size[0], this.size[1]);
-  ctx.restore();
-};
+    if (this.flags.collapsed)
+        return;
+    ctx.save();
+    ctx.fillStyle = "#00334d";
+    ctx.fillRect(0, 0, this.size[0], this.size[1]);
+    
+    //Border
+    const BORDERSTRENGTH = 4
+    if(this.active.value) {
+        ctx.beginPath();
+        ctx.strokeStyle = "#00FF00";
+        ctx.lineWidth = BORDERSTRENGTH;
+        ctx.rect(0 + BORDERSTRENGTH / 2, 0 + BORDERSTRENGTH / 2, this.size[0] - BORDERSTRENGTH, this.size[1] - BORDERSTRENGTH);
+        ctx.stroke();
+    }
+    ctx.restore();
+}
+
+OutputNode.prototype.onAdded = function () {
+    outRegistry.addOutputNode(this);
+}
+
+OutputNode.prototype.onRemoved = function () {
+    outRegistry.removeOutputNode(this);
+}
+
+OutputNode.prototype.activeToggled = function () {
+    if(this.active.value === true) {
+        outRegistry.setCurrentVideoOut(this);
+    } else {
+        outRegistry.setCurrentVideoOut(null);
+    }
+}
+
+OutputNode.prototype.updateActiveState = function () {
+    try {
+        var isActive = this.id === outRegistry.getCurrentVideoOut().getId()
+        if(this.active.value !== isActive) {
+            this.active.value = isActive
+        }
+    } catch {
+        this.active.value = false;
+    }
+}
 
 OutputNode.prototype.onExecute = function () {
-  var outputCanvas = document.getElementById("main-output-view");
-  var outputCanvasContext = outputCanvas.getContext("2d");
-  var width = outputCanvas.width;
-  var height = outputCanvas.height;
+    if(this.active.value == false) {
+        return;
+    }
+    
+    var outputCanvas = document.getElementById('main-output-view');
+    var outputCanvasContext = outputCanvas.getContext('2d');
+    var width = outputCanvas.width;
+    var height = outputCanvas.height;
+
+    //INPUT
+    var inputPixelArray = this.getInputData(0);
+    try {
+        var inputWidth = inputPixelArray.width;
+        var inputHeight = inputPixelArray.height;
+    } catch {
+        var inputWidth = 720;
+        var inputHeight = 360;
+    }
 
   //INPUT
   var inputPixelArray = this.getInputData(0);

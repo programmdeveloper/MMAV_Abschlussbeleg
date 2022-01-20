@@ -1,14 +1,20 @@
-export function ImageInputNode() {
-  this.addOutput("Out", "array");
-  this.video = null;
-  this.prevUrl = "";
+import audioContextProvider from "../AudioContextProvider";
 
-  //WIDGETS
-  this.url = this.addWidget("text", "URL", "");
-  this.play = this.addWidget("button", "Play/Pause", "", this.playClicked.bind(this));
-  //this.play = this.addWidget("button", "Play/Pause", "")
-  this.loop = this.addWidget("toggle", "Loop");
-  this.speed = this.addWidget("slider", "Speed", 1, function () {}, { min: 0, max: 4 });
+export function ImageInputNode() {
+    this.addOutput("Out", "array");
+    this.addOutput("Audio", "audioElement");
+    this.video = null;
+    this.prevUrl = "";
+
+    this.audioCtx = audioContextProvider.getAudioContext();
+    this.audio = null
+
+    //WIDGETS
+    this.url = this.addWidget("text", "URL", "");
+    this.play = this.addWidget("button", "Play/Pause", "", this.playClicked.bind(this))
+    //this.play = this.addWidget("button", "Play/Pause", "")
+    this.loop = this.addWidget("toggle", "Loop")
+    this.speed = this.addWidget("slider", "Speed", 1, function () {}, {min: 0, max: 4})
 }
 
 ImageInputNode.title = "Image Input";
@@ -48,14 +54,15 @@ ImageInputNode.prototype.onRemoved = function () {
 };
 
 ImageInputNode.prototype.onExecute = function () {
-  if (this.video == null && this.url.value !== this.prevUrl) {
-    this.video = document.createElement("video");
-    this.video.src = this.url.value;
-    this.video.type = "type=video/mp4";
-    this.video.muted = true;
-    this.prevUrl = this.url.value;
-    this.video.load();
-  }
+    if(this.video == null && this.url.value != this.prevUrl) {
+        this.video = document.createElement('video');
+        this.video.src = this.url.value;
+        //this.video.type = "type=video/mp4";
+        this.video.muted = false;
+        this.prevUrl = this.url.value;
+        this.video.load();
+        this.audio = this.audioCtx.createMediaElementSource(this.video);
+    }
 
   if (this.video != null) {
     let tmpCanvas = document.createElement("canvas");
@@ -68,15 +75,12 @@ ImageInputNode.prototype.onExecute = function () {
       this.video.play();
     }
 
-    if (this.video.readyState > 0) {
-      tmpCanvasCtx.drawImage(this.video, 0, 0, this.video.videoWidth, this.video.videoHeight);
-      var outputPixelArray = tmpCanvasCtx.getImageData(
-        0,
-        0,
-        this.video.videoWidth,
-        this.video.videoHeight
-      );
-      this.setOutputData(0, outputPixelArray);
+        if(this.video.readyState > 0){
+            tmpCanvasCtx.drawImage(this.video, 0, 0, this.video.videoWidth, this.video.videoHeight);
+            var outputPixelArray = tmpCanvasCtx.getImageData(0, 0, this.video.videoWidth, this.video.videoHeight);
+            this.setOutputData(0, outputPixelArray);
+        }
+
+        this.setOutputData(1, this.audio);
     }
   }
-};
