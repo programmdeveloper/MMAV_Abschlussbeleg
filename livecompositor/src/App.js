@@ -17,8 +17,10 @@ function App() {
 
               <div className='App-interface'>
                   <NodeGraph />
-                  <OutputView />
-                  <AudioExternalControl />
+                  <div className='App-interface-output'>
+                      <OutputView />
+                      <AudioExternalControl />
+                  </div>
               </div>
 
               <footer className="App-footer">
