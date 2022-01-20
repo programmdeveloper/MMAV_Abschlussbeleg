@@ -1,16 +1,17 @@
-import logo from './logo.svg';
+import React, {useState} from "react";
 import './App.css';
 import NodeGraph from './Components/NodeGraph';
 import OutputView from './Components/OutputView';
-import AudioControl from "./Components/AudioControl";
 import RecordComponent from './Components/RecordComponent';
+import AudioExternalControl from "./Components/AudioExternalControl";
 
 function App() {
   return (
     <div className="App">
+
       <NodeGraph />
       <OutputView />
-      <AudioControl/>
+      <AudioExternalControl/>
       <RecordComponent />
     </div>
   );

@@ -20,44 +20,38 @@ export function ImageInputNode() {
 ImageInputNode.title = "Image Input";
 
 ImageInputNode.prototype.onAction = function (action, data) {
-    if (this.button_was_clicked)
-        console.log("BUTTON CLICKED")
-}
+  if (this.button_was_clicked) console.log("BUTTON CLICKED");
+};
 
 ImageInputNode.prototype.onDrawForeground = function (ctx, graphcanvas) {
-    if (this.flags.collapsed)
-        return;
-    ctx.save();
-    ctx.fillStyle = "#ffcc00";
-    ctx.fillRect(0, 0, this.size[0], this.size[1]);
-    ctx.restore();
-}
+  if (this.flags.collapsed) return;
+  ctx.save();
+  ctx.fillStyle = "#ffcc00";
+  ctx.fillRect(0, 0, this.size[0], this.size[1]);
+  ctx.restore();
+};
 
 ImageInputNode.prototype.playClicked = function () {
-    try {
-        if (this.video.paused || this.video.ended) {
-            this.video.play();
-            console.log("PLAY");
-        } else {
-            this.video.pause();
-            console.log("PAUSE");
-        }
-    } catch {
-        console.log("NO VIDEO SPECIFIED");
+  try {
+    if (this.video.paused || this.video.ended) {
+      this.video.play();
+      console.log("PLAY");
+    } else {
+      this.video.pause();
+      console.log("PAUSE");
     }
-}
-
+  } catch {
+    console.log("NO VIDEO SPECIFIED");
+  }
+};
 
 ImageInputNode.prototype.onRemoved = function () {
-    try {
-        this.video.pause();
-        this.video.remove();
-    } catch {
-        ;
-    }
-    this.video = null;
-}
-
+  try {
+    this.video.pause();
+    this.video.remove();
+  } catch {}
+  this.video = null;
+};
 
 ImageInputNode.prototype.onExecute = function () {
     if(this.video == null && this.url.value != this.prevUrl) {
@@ -70,16 +64,16 @@ ImageInputNode.prototype.onExecute = function () {
         this.audio = this.audioCtx.createMediaElementSource(this.video);
     }
 
-    if(this.video != null) {
-        let tmpCanvas = document.createElement('canvas');
-        tmpCanvas.width = this.video.videoWidth;
-        tmpCanvas.height = this.video.videoHeight;
-        let tmpCanvasCtx = tmpCanvas.getContext('2d');
+  if (this.video != null) {
+    let tmpCanvas = document.createElement("canvas");
+    tmpCanvas.width = this.video.videoWidth;
+    tmpCanvas.height = this.video.videoHeight;
+    let tmpCanvasCtx = tmpCanvas.getContext("2d");
 
-        this.video.playbackRate = this.speed.value;
-        if(this.video.ended && this.loop.value==true) {
-            this.video.play();
-        }
+    this.video.playbackRate = this.speed.value;
+    if (this.video.ended && this.loop.value == true) {
+      this.video.play();
+    }
 
         if(this.video.readyState > 0){
             tmpCanvasCtx.drawImage(this.video, 0, 0, this.video.videoWidth, this.video.videoHeight);
@@ -89,4 +83,4 @@ ImageInputNode.prototype.onExecute = function () {
 
         this.setOutputData(1, this.audio);
     }
-}
+  }
