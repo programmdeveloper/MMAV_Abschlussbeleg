@@ -66,9 +66,11 @@
     border: 1px solid #2497E3;
     box-sizing: border-box;
     border-radius: 5px 5px 5px 5px;
-    display: flex;
-    flex-direction: row;
     margin: 1%;
+}
+
+.checkbox {
+    margin-left: 5rem;
 }
 
 .Slider-beschreibung {

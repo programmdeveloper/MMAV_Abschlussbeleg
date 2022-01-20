@@ -23,9 +23,9 @@ const AudioExternalControl = () => {
             </div>
             
             <div className="Checkbox">
-                <input type="checkbox" id="muteExternal" onChange={() => audioMixingInstance.muteExternal(document.getElementById('externalVolume').value)} />
+                <input type="checkbox" id="muteExternal" className= "checkbox" onChange={() => audioMixingInstance.muteExternal(document.getElementById('externalVolume').value)} />
                 <label htmlFor="externalAudio">Mute external Audio</label>
-                <input type="checkbox" id="muteNode" onChange={() => audioMixingInstance.muteNode(document.getElementById('nodeVolume').value)} />
+                <input type="checkbox" id="muteNode" className="checkbox" onChange={() => audioMixingInstance.muteNode(document.getElementById('nodeVolume').value)} />
                 <label htmlFor="externalAudio">Mute Node Audio</label>
             </div>
 
