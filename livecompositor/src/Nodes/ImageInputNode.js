@@ -10,6 +10,7 @@ export function ImageInputNode() {
     this.audio = null
 
     //WIDGETS
+    this.upload = this.addWidget("button", "Upload", "", this.uploadClicked.bind(this))
     this.url = this.addWidget("text", "URL", "");
     this.play = this.addWidget("button", "Play/Pause", "", this.playClicked.bind(this))
     //this.play = this.addWidget("button", "Play/Pause", "")
@@ -30,6 +31,25 @@ ImageInputNode.prototype.onDrawForeground = function (ctx, graphcanvas) {
   ctx.fillRect(0, 0, this.size[0], this.size[1]);
   ctx.restore();
 };
+
+ImageInputNode.prototype.handleUpload = function (event) {
+  var file = event.target.files[0];
+
+  if (file.type.startsWith("video/")) {
+    this.url.value = URL.createObjectURL(file);
+  } else {
+    this.url.value = "";
+    alert("Invalid Filetype.");
+  }
+}
+
+ImageInputNode.prototype.uploadClicked = function () {
+  var filebrowser = document.createElement("input");
+  filebrowser.setAttribute("type", "file");
+  filebrowser.setAttribute("accept", "video/*");
+  filebrowser.addEventListener("change", this.handleUpload.bind(this), false);
+  filebrowser.click();
+}
 
 ImageInputNode.prototype.playClicked = function () {
   try {
@@ -54,14 +74,15 @@ ImageInputNode.prototype.onRemoved = function () {
 };
 
 ImageInputNode.prototype.onExecute = function () {
-    if(this.video == null && this.url.value != this.prevUrl) {
-        this.video = document.createElement('video');
-        this.video.src = this.url.value;
-        //this.video.type = "type=video/mp4";
-        this.video.muted = false;
-        this.prevUrl = this.url.value;
-        this.video.load();
-        this.audio = this.audioCtx.createMediaElementSource(this.video);
+    if(this.url.value != this.prevUrl) {
+      this.video = document.createElement('video');
+      if(this.url.value != "") {
+          this.video.src = this.url.value;
+          this.video.muted = false;
+          this.video.load();
+          this.audio = this.audioCtx.createMediaElementSource(this.video);
+      }
+      this.prevUrl = this.url.value;
     }
 
   if (this.video != null) {
