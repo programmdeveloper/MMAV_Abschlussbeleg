@@ -5,7 +5,6 @@ import recorder from '../Recorder';
 
 export function OutputNode() {
   this.addInput("Out", "array");
-  this.prevPixelArray = [];
 
   this.id = uuidv4();
 
@@ -95,43 +94,39 @@ OutputNode.prototype.onExecute = function () {
 
   var outputPixelArray = scaleCanvasCtx.createImageData(inputWidth, inputHeight);
 
-  if (this.prevPixelArray !== inputPixelArray) {
+  outputCanvasContext.fillStyle = "black"
+  outputCanvasContext.fillRect(0, 0, width, height);
 
-    outputCanvasContext.fillStyle = "black"
-    outputCanvasContext.fillRect(0, 0, width, height);
-
-    //COPY INPUT PIXEL ARRAY TO OUTPUT
-    if (inputPixelArray != undefined) {
-      if (inputPixelArray.length == undefined) {
-        for (let i = 0; i < inputPixelArray.data.length; i++) {
-          outputPixelArray.data[i] = inputPixelArray.data[i]
-        }
-      } else {
-        for (let i = 0; i < inputPixelArray.length; i++) {
-          outputPixelArray.data[i] = inputPixelArray[i]
-        }
+  //COPY INPUT PIXEL ARRAY TO OUTPUT
+  if (inputPixelArray != undefined) {
+    if (inputPixelArray.length == undefined) {
+      for (let i = 0; i < inputPixelArray.data.length; i++) {
+        outputPixelArray.data[i] = inputPixelArray.data[i]
+      }
+    } else {
+      for (let i = 0; i < inputPixelArray.length; i++) {
+        outputPixelArray.data[i] = inputPixelArray[i]
       }
     }
-
-    scaleCanvasCtx.putImageData(outputPixelArray, 0, 0);
-
-    //SCALE UNSCALED IMAGE AND DRAW IN OUTPUT
-    var offsetX = (width - width * ((inputWidth * ZOOMFACTOR) / width)) * 0.5
-    var offsetY = (height - height * ((inputHeight * ZOOMFACTOR) / height)) * 0.5
-
-    outputCanvasContext.translate(offsetX + OFFSET_X, offsetY + OFFSET_Y)
-    outputCanvasContext.scale(ZOOMFACTOR, ZOOMFACTOR)
-    outputCanvasContext.drawImage(this.scaleCanvas, 0, 0);
-    //BORDER AROUND SCALED IMAGE
-    outputCanvasContext.lineWidth = 3;
-    outputCanvasContext.strokeStyle = "#FF0000";
-    outputCanvasContext.strokeRect(0, 0, inputWidth, inputHeight);
-    //RESOLUTION OVERLAY
-    outputCanvasContext.font = "30px Consolas";
-    outputCanvasContext.fillStyle = "grey"
-    outputCanvasContext.fillText(inputWidth + "x" + inputHeight, 0, inputHeight + 30);
-    outputCanvasContext.scale(1 / ZOOMFACTOR, 1 / ZOOMFACTOR)
-    outputCanvasContext.translate(-(offsetX + OFFSET_X), -(offsetY + OFFSET_Y))
-    this.prevPixelArray = inputPixelArray
   }
+
+  scaleCanvasCtx.putImageData(outputPixelArray, 0, 0);
+
+  //SCALE UNSCALED IMAGE AND DRAW IN OUTPUT
+  var offsetX = (width - width * ((inputWidth * ZOOMFACTOR) / width)) * 0.5
+  var offsetY = (height - height * ((inputHeight * ZOOMFACTOR) / height)) * 0.5
+
+  outputCanvasContext.translate(offsetX + OFFSET_X, offsetY + OFFSET_Y)
+  outputCanvasContext.scale(ZOOMFACTOR, ZOOMFACTOR)
+  outputCanvasContext.drawImage(this.scaleCanvas, 0, 0);
+  //BORDER AROUND SCALED IMAGE
+  outputCanvasContext.lineWidth = 3;
+  outputCanvasContext.strokeStyle = "#FF0000";
+  outputCanvasContext.strokeRect(0, 0, inputWidth, inputHeight);
+  //RESOLUTION OVERLAY
+  outputCanvasContext.font = "30px Consolas";
+  outputCanvasContext.fillStyle = "grey"
+  outputCanvasContext.fillText(inputWidth + "x" + inputHeight, 0, inputHeight + 30);
+  outputCanvasContext.scale(1 / ZOOMFACTOR, 1 / ZOOMFACTOR)
+  outputCanvasContext.translate(-(offsetX + OFFSET_X), -(offsetY + OFFSET_Y))
 }

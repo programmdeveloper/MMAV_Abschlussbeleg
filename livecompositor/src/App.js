@@ -7,23 +7,25 @@ import RecordComponent from './Components/RecordComponent';
 import AudioExternalControl from "./Components/AudioExternalControl";
 import Divider from './Components/Divider';
 
-export var WIDTH = window.innerWidth;
-export var HEIGHT = window.innerHeight;
+export var REDRAWOUT = false;
 export var GRAPHWIDTH = 0.5;
 export var OUTHEIGHT = 0.5;
 
 function App() {
 
-    const [width, setWidth] = useState(window.innerWidth);
-    const [height, setHeight] = useState(window.innerHeight);
-    const [nodeGraphWidth, setNodeGraphWidth] = useState(50);
-    const [outputViewHeight, setOutputViewHeight] = useState(50);
-
     React.useEffect(() => {
 
         function handleResize() {
-            WIDTH = window.innerWidth;
-            HEIGHT = window.innerHeight;
+            var outputView = document.getElementById("main-output-view");
+            var outputViewContext = outputView.getContext("2d");
+            var graph = document.getElementById("node-graph-canvas");
+            var graphContext = graph.getContext("2d");
+
+            outputView.width = window.innerWidth * (1-GRAPHWIDTH);
+            outputView.height = window.innerHeight * (OUTHEIGHT);
+            graph.width = window.innerWidth * GRAPHWIDTH;
+            graph.height = window.innerHeight;
+            graph.dispatchEvent(new Event('mousemove'));
         }
 
         window.addEventListener('resize', handleResize)
@@ -40,10 +42,10 @@ function App() {
               </header>
 
               <div className='App-interface'>
-                  <NodeGraph width={width} height={height}/>
+                  <NodeGraph />
                   <Divider vertical={true} />
                   <div className='App-interface-output'>
-                      <OutputView width={width} height={height}/>
+                      <OutputView />
                       <Divider vertical={false} />
                       <div className='Menu'>
                           <AudioExternalControl />

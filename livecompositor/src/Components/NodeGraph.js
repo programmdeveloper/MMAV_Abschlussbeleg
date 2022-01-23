@@ -18,8 +18,7 @@ const NodeGraph = () => {
 
     return (
         <div className="Nodegraphcanvas" id="Nodegraphcanvas">
-            {/* <canvas id='node-graph-canvas' className='node-graph-canvas' height={window.innerHeight - 90} width={window.innerWidth / 2} style={{ backgroundColor:"#374049"}}></canvas> */}
-            <canvas id='node-graph-canvas' className='node-graph-canvas' height={HEIGHT} width={WIDTH * GRAPHWIDTH} style={{ backgroundColor: "#374049" }}></canvas>
+            <canvas id='node-graph-canvas' className='node-graph-canvas' height={window.innerHeight - 90} width={window.innerWidth / 2} style={{ backgroundColor:"#374049"}}></canvas>
         </div>
     )
 }

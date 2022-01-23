@@ -4,7 +4,7 @@ export var ZOOMFACTOR = 0.5;
 export var OFFSET_X = 0;
 export var OFFSET_Y = 0;
 
-const OutputView = ( {width, height}) => {
+const OutputView = () => {
 
     const [dragOn, setDragOn] = useState(false);
     const [startDragX, setStartDragX] = useState(0);
@@ -69,7 +69,7 @@ const OutputView = ( {width, height}) => {
     }, [""]);
 
     return (
-        <div id='Mainoutputview' className='Mainoutputview'>
+        <div id='Mainoutputview' className='Mainoutputview' style={{backgroundColor: "black"}}>
             <canvas id="main-output-view" className="main-output-view" height={window.innerHeight / 2} width={window.innerWidth / 2} ></canvas>
         </div>
     )
