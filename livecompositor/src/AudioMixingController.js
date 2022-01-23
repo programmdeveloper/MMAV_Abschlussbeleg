@@ -7,14 +7,14 @@ class AudioMixingController {
             this.out = this.audioCtx.destination;
             this.streamOut = this.audioCtx.createMediaStreamDestination();
 
-            this.externalAudio = new Audio("Music/Land_of_8_Bits.wav");
+            this.externalAudio = undefined;
             //Audio Node for external Audio
-            this.externalAudioSource = this.audioCtx.createMediaElementSource(this.externalAudio);
+            this.externalAudioSource = undefined;
 
             this.gainNodeExternal = this.audioCtx.createGain();
 
 
-            this.externalAudioSource.connect(this.gainNodeExternal);
+            //this.externalAudioSource.connect(this.gainNodeExternal);
             this.gainNodeExternal.connect(this.out);
             this.gainNodeExternal.connect(this.streamOut);
 
@@ -46,14 +46,22 @@ class AudioMixingController {
         } catch {
             ;
         }
+        this.externalAudio = undefined;
+        this.externalAudioSource = undefined;
     }
 
     playExternal() {
-        this.externalAudio.play();
+        if(this.externalAudio != undefined && this.externalAudioSource != undefined) {
+            this.externalAudio.play();
+        } else {
+            alert("Upload audiofile first!");
+        }
     }
 
     pauseExternal() {
-        this.externalAudio.pause();
+        if (this.externalAudio != undefined && this.externalAudioSource != undefined) {
+            this.externalAudio.pause();
+        }
     }
 
     adaptExternalVolume(value) {
