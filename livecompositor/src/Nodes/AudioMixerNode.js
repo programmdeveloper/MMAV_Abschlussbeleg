@@ -1,9 +1,13 @@
 import audioContextProvider from "../AudioContextProvider";
+import NodeRegisterInstance from '../NodeRegister';
 
 export function AudioMixerNode() {
     this.addInput("Audio A", "audioElement");
     this.addInput("Audio B", "audioElement");
     this.addOutput("Audio Out", "audioElement");
+
+    var LiteGraph = NodeRegisterInstance.getLiteGraph();
+    this.addInput("A/B", LiteGraph.ACTION);
 
     this.volumeA = this.addWidget("slider", "Volume A", 1, this.updateVolumeA.bind(this), { min: 0, max: 1 })
     this.volumeB = this.addWidget("slider", "Volume B", 1, this.updateVolumeB.bind(this), { min: 0, max: 1 })
@@ -34,6 +38,21 @@ AudioMixerNode.prototype.onDrawForeground = function (ctx, graphcanvas) {
     ctx.fillStyle = "#b30000";
     ctx.fillRect(0, 0, this.size[0], this.size[1]);
     ctx.restore();
+}
+
+AudioMixerNode.prototype.onAction = function (action, data) {
+    if (action == "A/B") {
+        if (this.volumeA.value < 1.0) {
+            this.volumeA.value = 1.0
+            this.volumeB.value = 0.0
+        } else {
+            this.volumeA.value = 0.0
+            this.volumeB.value = 1.0
+        }
+        this.updateVolumeA()
+        this.updateVolumeB()
+    }
+
 }
 
 AudioMixerNode.prototype.updateVolumeA = function () {
