@@ -1,8 +1,13 @@
 import audioContextProvider from "../AudioContextProvider";
+import NodeRegisterInstance from '../NodeRegister';
 
 export function ImageInputNode() {
     this.addOutput("Out", "array");
     this.addOutput("Audio", "audioElement");
+
+    var LiteGraph = NodeRegisterInstance.getLiteGraph();
+    this.addInput("Play", LiteGraph.ACTION);
+
     this.video = null;
     this.prevUrl = "";
 
@@ -64,6 +69,14 @@ ImageInputNode.prototype.playClicked = function () {
     console.log("NO VIDEO SPECIFIED");
   }
 };
+
+ImageInputNode.prototype.onAction = function(action, data)
+{
+  if (action == "Play") {
+    this.playClicked()
+  }
+
+}
 
 ImageInputNode.prototype.onRemoved = function () {
   try {
