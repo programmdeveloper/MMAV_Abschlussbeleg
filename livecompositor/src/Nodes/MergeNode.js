@@ -1,7 +1,12 @@
+import NodeRegisterInstance from '../NodeRegister';
+
 export function MergeNode() {
     this.addInput("A", "array");
     this.addInput("B", "array");
     this.addOutput("Out", "array");
+
+    var LiteGraph = NodeRegisterInstance.getLiteGraph();
+    this.addInput("A/B", LiteGraph.ACTION);
 
     this.operation = this.addWidget("combo", "Operation", "Over", null, { values: ["Over", "Multiply", "Add", "Subtract"] });
     this.bounds = this.addWidget("combo", "Bounding Box From", "B", null, { values: ["A", "B"] });
@@ -21,6 +26,17 @@ MergeNode.prototype.onDrawForeground = function (ctx, graphcanvas) {
     ctx.fillStyle = "#0000e6";
     ctx.fillRect(0, 0, this.size[0], this.size[1]);
     ctx.restore();
+}
+
+MergeNode.prototype.onAction = function (action, data) {
+    if (action == "A/B") {
+        if(this.mix.value < 1.0) {
+            this.mix.value = 1.0
+        } else {
+            this.mix.value = 0.0
+        }
+    }
+
 }
 
 MergeNode.prototype.mergeNormal = function (pixelArrayA, pixelArrayB) {
