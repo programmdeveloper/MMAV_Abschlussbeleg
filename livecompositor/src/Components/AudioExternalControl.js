@@ -3,8 +3,20 @@ import audioMixingInstance from '../AudioMixingController'
 
 const AudioExternalControl = () => {
 
+    const handleFileInput = (event) => {
+        var file = event.target.files[0];
+
+        if(file.type.startsWith("audio/")) {
+            audioMixingInstance.uploadAudio(file);
+        }else {
+            audioMixingInstance.clearExternalAudio();
+            alert("Invalid Filetype.");
+        }
+    }
+
     return (
         <div>
+            <input type="file" id="uploadButton" className="Button" onChange={handleFileInput} accept="audio/*" />
             <button id="playButton" className = "Button" onClick={() => audioMixingInstance.playExternal()}>Play</button>
             <button id="pauseButton" className="Button" onClick={() => audioMixingInstance.pauseExternal()}>Pause</button>
             <div id="volume" className = "Volume">

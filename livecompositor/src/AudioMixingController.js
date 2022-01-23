@@ -33,6 +33,21 @@ class AudioMixingController {
         return this.streamOut;
     }
 
+    uploadAudio(file) {
+        this.clearExternalAudio();
+        this.externalAudio = new Audio(URL.createObjectURL(file));
+        this.externalAudioSource = this.audioCtx.createMediaElementSource(this.externalAudio);
+        this.externalAudioSource.connect(this.gainNodeExternal);
+    }
+
+    clearExternalAudio() {
+        try {
+            this.externalAudioSource.disconnect(this.gainNodeExternal);
+        } catch {
+            ;
+        }
+    }
+
     playExternal() {
         this.externalAudio.play();
     }
