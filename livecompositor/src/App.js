@@ -21,10 +21,10 @@ function App() {
             var graph = document.getElementById("node-graph-canvas");
             var graphContext = graph.getContext("2d");
 
-            outputView.width = window.innerWidth * (1-GRAPHWIDTH);
+            outputView.width = document.body.offsetWidth * (1-GRAPHWIDTH) - 3;
             outputView.height = window.innerHeight * (OUTHEIGHT);
-            graph.width = window.innerWidth * GRAPHWIDTH;
-            graph.height = window.innerHeight;
+            graph.width = document.body.offsetWidth * GRAPHWIDTH - 3;
+            graph.height = document.documentElement.clientHeight - 90;
             graph.dispatchEvent(new Event('mousemove'));
         }
 

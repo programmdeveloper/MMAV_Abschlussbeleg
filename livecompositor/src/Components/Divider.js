@@ -4,17 +4,20 @@
 
         if(vertical) {
             var style = {
-                width:"5px",
-                height: "100%",
-                backgroundColor: "red",
+                width:"4px",
+                padding:"1px",
+                height: "calc(100vh - 90px)",
+                backgroundColor: "#374049",
                 cursor: "col-resize",
+                border: "2px solid #6e8091"
             };
         } else {
             var style = {
-                width: "100%",
-                height: "5px",
-                backgroundColor: "red",
+                width: "calc(100% - 4px)",
+                height: "2px",
+                backgroundColor: "#374049",
                 cursor: "row-resize",
+                border: "2px solid #6e8091"
             };
         }
 
