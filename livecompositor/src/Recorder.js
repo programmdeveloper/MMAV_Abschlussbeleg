@@ -1,3 +1,5 @@
+import audioMixController from './AudioMixingController';
+
 class Recorder {
     constructor() {
         if (!Recorder._instance) {
@@ -41,7 +43,9 @@ class Recorder {
 
         if(this.recording === false) {
             this.recording = true;
-            var stream = this.canvasToRecord.captureStream(this.framerate)
+            var videoStream = this.canvasToRecord.captureStream(this.framerate)
+            var audioStream = audioMixController.getStreamOut();
+            var combinedStream = new MediaStream([...videoStream.getTracks(),...audioStream.stream.getTracks()]);
 
             let options = {
                 audioBitsPerSecond: 128000,
@@ -52,17 +56,17 @@ class Recorder {
             this.recordedChunks = [];
 
             try {
-                this.mediaRecorder = new MediaRecorder(stream, options);
+                this.mediaRecorder = new MediaRecorder(combinedStream, options);
             } catch (e0) {
                 console.log('Unable to create MediaRecorder with options Object: ', e0);
                 try {
                     options = { mimeType: 'video/webm,codecs=vp9' };
-                    this.mediaRecorder = new MediaRecorder(stream, options);
+                    this.mediaRecorder = new MediaRecorder(combinedStream, options);
                 } catch (e1) {
                     console.log('Unable to create MediaRecorder with options Object: ', e1);
                     try {
                         options = 'video/vp8'; // Chrome 47
-                        this.mediaRecorder = new MediaRecorder(stream, options);
+                        this.mediaRecorder = new MediaRecorder(combinedStream, options);
                     } catch (e2) {
                         alert('MediaRecorder is not supported by this browser.\n\n' +
                             'Try Firefox 29 or later, or Chrome 47 or later, ' +

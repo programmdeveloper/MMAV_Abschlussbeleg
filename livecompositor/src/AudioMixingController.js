@@ -5,6 +5,7 @@ class AudioMixingController {
         if (!AudioMixingController._instance) {
             this.audioCtx = audioContextProvider.getAudioContext();
             this.out = this.audioCtx.destination;
+            this.streamOut = this.audioCtx.createMediaStreamDestination();
 
             this.externalAudio = new Audio("Music/Land_of_8_Bits.wav");
             //Audio Node for external Audio
@@ -15,15 +16,21 @@ class AudioMixingController {
 
             this.externalAudioSource.connect(this.gainNodeExternal);
             this.gainNodeExternal.connect(this.out);
+            this.gainNodeExternal.connect(this.streamOut);
 
             //Audio Node from Node editor
             this.nodeEditorAudioSource = null;
             this.gainNode = this.audioCtx.createGain();
             this.gainNode.connect(this.out);
+            this.gainNode.connect(this.streamOut);
 
             AudioMixingController._instance = this;
         }
         return AudioMixingController._instance;
+    }
+
+    getStreamOut() {
+        return this.streamOut;
     }
 
     playExternal() {
