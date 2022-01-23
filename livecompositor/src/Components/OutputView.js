@@ -4,7 +4,7 @@ export var ZOOMFACTOR = 0.5;
 export var OFFSET_X = 0;
 export var OFFSET_Y = 0;
 
-const OutputView = () => {
+const OutputView = ( {width, height}) => {
 
     const [dragOn, setDragOn] = useState(false);
     const [startDragX, setStartDragX] = useState(0);

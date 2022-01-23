@@ -5,8 +5,31 @@ import NodeGraph from './Components/NodeGraph';
 import OutputView from './Components/OutputView';
 import RecordComponent from './Components/RecordComponent';
 import AudioExternalControl from "./Components/AudioExternalControl";
+import Divider from './Components/Divider';
+
+export var WIDTH = window.innerWidth;
+export var HEIGHT = window.innerHeight;
+export var GRAPHWIDTH = 0.5;
+export var OUTHEIGHT = 0.5;
 
 function App() {
+
+    const [width, setWidth] = useState(window.innerWidth);
+    const [height, setHeight] = useState(window.innerHeight);
+    const [nodeGraphWidth, setNodeGraphWidth] = useState(50);
+    const [outputViewHeight, setOutputViewHeight] = useState(50);
+
+    React.useEffect(() => {
+
+        function handleResize() {
+            WIDTH = window.innerWidth;
+            HEIGHT = window.innerHeight;
+        }
+
+        window.addEventListener('resize', handleResize)
+
+    }, [""])
+
   return (
     <div className="App">
           <div className="App">
@@ -17,9 +40,11 @@ function App() {
               </header>
 
               <div className='App-interface'>
-                  <NodeGraph />
+                  <NodeGraph width={width} height={height}/>
+                  <Divider vertical={true} />
                   <div className='App-interface-output'>
-                      <OutputView />
+                      <OutputView width={width} height={height}/>
+                      <Divider vertical={false} />
                       <div className='Menu'>
                           <AudioExternalControl />
                           <RecordComponent />
