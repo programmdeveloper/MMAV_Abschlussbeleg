@@ -21,32 +21,35 @@ ChromaKeyingEffectNode.prototype.onExecute = function () {
   if (!this.getInputData(0)) return;
   var pixelArray = this.getInputData(0);
   var outputPixelArray = new ImageData(pixelArray.width, pixelArray.height);
+  var red = 0;
+  var green = 0;
+  var blue = 0;
 
   for (let i = 0; i < pixelArray.data.length; i += 4) {
-    const red = pixelArray.data[i];
-    const green = pixelArray.data[i + 1];
-    const blue = pixelArray.data[i + 2];
+    red = pixelArray.data[i];
+    green = pixelArray.data[i + 1];
+    blue = pixelArray.data[i + 2];
     outputPixelArray.data[i] = red;
     outputPixelArray.data[i + 1] = green;
     outputPixelArray.data[i + 2] = blue;
     //preset black
     switch (this.chroma.value) {
       case "green":
-        if (red <= 45 && green >= 100 && blue <= 45 && Math.abs(red - blue) <= 30) {
+        if (red < 45 && green > 100 && blue < 45 && Math.abs(red - blue) <= 30) {
           outputPixelArray.data[i + 3] = 0;
         } else {
           outputPixelArray.data[i + 3] = 255;
         }
         break;
       case "red":
-        if (red >= 150 && green <= 30 && blue <= 30 && Math.abs(green - blue) <= 20) {
+        if (red >= 100 && green <= 45 && blue <= 45 && Math.abs(green - blue) <= 30) {
           outputPixelArray.data[i + 3] = 0;
         } else {
           outputPixelArray.data[i + 3] = 255;
         }
         break;
       case "blue":
-        if (red <= 45 && green <= 45 && blue >= 125 && Math.abs(red - green) <= 25) {
+        if (red <= 45 && green <= 45 && blue >= 100 && Math.abs(red - green) <= 30) {
           outputPixelArray.data[i + 3] = 0;
         } else {
           outputPixelArray.data[i + 3] = 255;
@@ -68,8 +71,8 @@ ChromaKeyingEffectNode.prototype.onExecute = function () {
       case "white":
         if (
           red >= 210 &&
-          green <= 210 &&
-          blue <= 210 &&
+          green >= 210 &&
+          blue >= 210 &&
           Math.abs(red - green) <= 5 &&
           Math.abs(red - blue) <= 5
         ) {
