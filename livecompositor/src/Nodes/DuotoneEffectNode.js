@@ -38,12 +38,15 @@ DuotoneEffectNode.prototype.onExecute = function () {
     this.previouscolorTo = this.properties.colorTo;
   }
   var pixelArray = this.getInputData(0);
+  var outputPixelArray = new ImageData(pixelArray.width, pixelArray.height);
+
   for (let i = 0; i < pixelArray.data.length; i += 4) {
-    pixelArray.data[i] = this.gradient[pixelArray.data[i]].red;
-    pixelArray.data[i + 1] = this.gradient[pixelArray.data[i + 1]].green;
-    pixelArray.data[i + 2] = this.gradient[pixelArray.data[i + 2]].blue;
+    outputPixelArray.data[i] = this.gradient[pixelArray.data[i]].red;
+    outputPixelArray.data[i + 1] = this.gradient[pixelArray.data[i + 1]].green;
+    outputPixelArray.data[i + 2] = this.gradient[pixelArray.data[i + 2]].blue;
+    outputPixelArray.data[i + 3] = 255;
   }
-  this.setOutputData(0, pixelArray);
+  this.setOutputData(0, outputPixelArray);
 };
 
 DuotoneEffectNode.prototype.updateRGB = function () {

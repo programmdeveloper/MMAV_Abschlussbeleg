@@ -17,6 +17,7 @@ NegativeEffectNode.prototype.onExecute = function () {
   if (!this.getInputData(0)) return;
   var pixelArray = this.getInputData(0);
   var outputPixelArray = new ImageData(pixelArray.width, pixelArray.height);
+
   for (let i = 0; i < pixelArray.data.length; i += 4) {
     outputPixelArray.data[i] = 255 - pixelArray.data[i];
     outputPixelArray.data[i + 1] = 255 - pixelArray.data[i + 1];

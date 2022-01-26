@@ -20,13 +20,15 @@ ContrastEffectNode.prototype.onDrawForeground = function (ctx, graphcanvas) {
 ContrastEffectNode.prototype.onExecute = function () {
   if (!this.getInputData(0)) return;
   var pixelArray = this.getInputData(0);
-  var data = pixelArray.data;
+  var outputPixelArray = new ImageData(pixelArray.width, pixelArray.height);
   var contrastFactor =
     (259.0 * (this.contrast.value + 255.0)) / (255.0 * (259.0 - this.contrast.value));
-  for (let i = 0; i < data.length; i += 4) {
-    data[i] = contrastFactor * (data[i] - 128.0) + 128.0;
-    data[i + 1] = contrastFactor * (data[i + 1] - 128.0) + 128.0;
-    data[i + 2] = contrastFactor * (data[i + 2] - 128.0) + 128.0;
+
+  for (let i = 0; i < pixelArray.data.length; i += 4) {
+    outputPixelArray.data[i] = contrastFactor * (pixelArray.data[i] - 128.0) + 128.0;
+    outputPixelArray.data[i + 1] = contrastFactor * (pixelArray.data[i + 1] - 128.0) + 128.0;
+    outputPixelArray.data[i + 2] = contrastFactor * (pixelArray.data[i + 2] - 128.0) + 128.0;
+    outputPixelArray.data[i + 3] = 255;
   }
-  this.setOutputData(0, pixelArray);
+  this.setOutputData(0, outputPixelArray);
 };

@@ -39,9 +39,9 @@ BlurEffectNode.prototype.createGaussKernel = function () {
 };
 
 BlurEffectNode.prototype.applyBlurEffect = function (pixelArray) {
-  var data = pixelArray.data;
   var width = pixelArray.width;
   var height = pixelArray.height;
+  var outputPixelArray = new ImageData(width, height);
   var bufferRed = new Uint8Array(width * height);
   var bufferGreen = new Uint8Array(width * height);
   var bufferBlue = new Uint8Array(width * height);
@@ -54,12 +54,13 @@ BlurEffectNode.prototype.applyBlurEffect = function (pixelArray) {
       var sumRed = 0;
       var sumGreen = 0;
       var sumBlue = 0;
+
       for (var k = 0; k < kernelLength; k++) {
         var col = i + (k + kernelHalf);
         col = col < 0 ? 0 : col >= width ? width - 1 : col;
-        sumRed += data[(hw + col) * 4] * this.gaussKernel[k];
-        sumGreen += data[(hw + col) * 4 + 1] * this.gaussKernel[k];
-        sumBlue += data[(hw + col) * 4 + 2] * this.gaussKernel[k];
+        sumRed += pixelArray.data[(hw + col) * 4] * this.gaussKernel[k];
+        sumGreen += pixelArray.data[(hw + col) * 4 + 1] * this.gaussKernel[k];
+        sumBlue += pixelArray.data[(hw + col) * 4 + 2] * this.gaussKernel[k];
       }
       bufferRed[hw + i] = sumRed;
       bufferGreen[hw + i] = sumGreen;
@@ -80,12 +81,13 @@ BlurEffectNode.prototype.applyBlurEffect = function (pixelArray) {
         sumBlue += bufferBlue[row * width + i] * this.gaussKernel[k];
       }
       var offset = (j * width + i) * 4;
-      data[offset] = sumRed;
-      data[offset + 1] = sumGreen;
-      data[offset + 2] = sumBlue;
+      outputPixelArray.data[offset] = sumRed;
+      outputPixelArray.data[offset + 1] = sumGreen;
+      outputPixelArray.data[offset + 2] = sumBlue;
+      outputPixelArray.data[i + 3] = 255;
     }
   }
-  return pixelArray;
+  return outputPixelArray;
 };
 
 BlurEffectNode.prototype.onExecute = function () {

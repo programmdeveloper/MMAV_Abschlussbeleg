@@ -16,13 +16,15 @@ GrayscaleEffectNode.prototype.onDrawForeground = function (ctx, graphcanvas) {
 GrayscaleEffectNode.prototype.onExecute = function () {
   if (!this.getInputData(0)) return;
   var pixelArray = this.getInputData(0);
+  var outputPixelArray = new ImageData(pixelArray.width, pixelArray.height);
+
   for (let i = 0; i < pixelArray.data.length; i += 4) {
     let count = pixelArray.data[i] + pixelArray.data[i + 1] + pixelArray.data[i + 2];
 
-    pixelArray.data[i] = count / 3;
-    pixelArray.data[i + 1] = count / 3;
-    pixelArray.data[i + 2] = count / 3;
-    pixelArray.data[i + 3] = 255;
+    outputPixelArray.data[i] = count / 3;
+    outputPixelArray.data[i + 1] = count / 3;
+    outputPixelArray.data[i + 2] = count / 3;
+    outputPixelArray.data[i + 3] = 255;
   }
-  this.setOutputData(0, pixelArray);
+  this.setOutputData(0, outputPixelArray);
 };

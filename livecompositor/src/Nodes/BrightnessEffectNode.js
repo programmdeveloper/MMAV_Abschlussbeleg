@@ -20,12 +20,14 @@ BrightnessEffectNode.prototype.onDrawForeground = function (ctx, graphcanvas) {
 BrightnessEffectNode.prototype.onExecute = function () {
   if (!this.getInputData(0)) return;
   var pixelArray = this.getInputData(0);
-  var data = pixelArray.data;
+  var outputPixelArray = new ImageData(pixelArray.width, pixelArray.height);
   var brightnessValue = this.brightness.value;
-  for (let i = 0; i < data.length; i += 4) {
-    data[i] += 255 * (brightnessValue / 100.0);
-    data[i + 1] += 255 * (brightnessValue / 100.0);
-    data[i + 2] += 255 * (brightnessValue / 100.0);
+
+  for (let i = 0; i < pixelArray.data.length; i += 4) {
+    outputPixelArray.data[i] = pixelArray.data[i] + 255 * (brightnessValue / 100.0);
+    outputPixelArray.data[i + 1] = pixelArray.data[i + 1] + 255 * (brightnessValue / 100.0);
+    outputPixelArray.data[i + 2] = pixelArray.data[i + 2] + 255 * (brightnessValue / 100.0);
+    outputPixelArray.data[i + 3] = 255;
   }
-  this.setOutputData(0, pixelArray);
+  this.setOutputData(0, outputPixelArray);
 };

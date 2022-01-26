@@ -20,25 +20,36 @@ ChromaKeyingEffectNode.prototype.onDrawForeground = function (ctx, graphcanvas) 
 ChromaKeyingEffectNode.prototype.onExecute = function () {
   if (!this.getInputData(0)) return;
   var pixelArray = this.getInputData(0);
+  var outputPixelArray = new ImageData(pixelArray.width, pixelArray.height);
+
   for (let i = 0; i < pixelArray.data.length; i += 4) {
-    const red = pixelArray.data[i + 0];
+    const red = pixelArray.data[i];
     const green = pixelArray.data[i + 1];
     const blue = pixelArray.data[i + 2];
+    outputPixelArray.data[i] = red;
+    outputPixelArray.data[i + 1] = green;
+    outputPixelArray.data[i + 2] = blue;
     //preset black
     switch (this.chroma.value) {
       case "green":
         if (red <= 45 && green >= 100 && blue <= 45 && Math.abs(red - blue) <= 30) {
-          pixelArray.data[i + 3] = 0;
+          outputPixelArray.data[i + 3] = 0;
+        } else {
+          outputPixelArray.data[i + 3] = 255;
         }
         break;
       case "red":
         if (red >= 150 && green <= 30 && blue <= 30 && Math.abs(green - blue) <= 20) {
-          pixelArray.data[i + 3] = 0;
+          outputPixelArray.data[i + 3] = 0;
+        } else {
+          outputPixelArray.data[i + 3] = 255;
         }
         break;
       case "blue":
         if (red <= 45 && green <= 45 && blue >= 125 && Math.abs(red - green) <= 25) {
-          pixelArray.data[i + 3] = 0;
+          outputPixelArray.data[i + 3] = 0;
+        } else {
+          outputPixelArray.data[i + 3] = 255;
         }
         break;
       case "black":
@@ -49,7 +60,9 @@ ChromaKeyingEffectNode.prototype.onExecute = function () {
           Math.abs(red - green) <= 5 &&
           Math.abs(red - blue) <= 5
         ) {
-          pixelArray.data[i + 3] = 0;
+          outputPixelArray.data[i + 3] = 0;
+        } else {
+          outputPixelArray.data[i + 3] = 255;
         }
         break;
       case "white":
@@ -60,10 +73,12 @@ ChromaKeyingEffectNode.prototype.onExecute = function () {
           Math.abs(red - green) <= 5 &&
           Math.abs(red - blue) <= 5
         ) {
-          pixelArray.data[i + 3] = 0;
+          outputPixelArray.data[i + 3] = 0;
+        } else {
+          outputPixelArray.data[i + 3] = 255;
         }
         break;
     }
   }
-  this.setOutputData(0, pixelArray);
+  this.setOutputData(0, outputPixelArray);
 };
