@@ -12,10 +12,15 @@ import { WebcamInputNode } from "./Nodes/WebcamInputNode";
 import { MergeNode } from "./Nodes/MergeNode";
 import { AudioOutputNode } from "./Nodes/AudioOutputNode";
 import { AudioMixerNode } from "./Nodes/AudioMixerNode";
+import { ButtonTriggerNode } from "./Nodes/ButtonTriggerNode";
 
-export default class NodeRegister {
+class NodeRegister {
   constructor() {
-    this.LiteGraph = require("litegraph.js/build/litegraph.js").LiteGraph;
+    if (!NodeRegister._instance) {
+      this.LiteGraph = require("litegraph.js/build/litegraph.js").LiteGraph;
+      NodeRegister._instance = this;
+    }
+    return NodeRegister._instance;
   }
 
   register() {
@@ -34,9 +39,14 @@ export default class NodeRegister {
     this.LiteGraph.registerNodeType("effect/ChromaKeyingEffectNode", ChromaKeyingEffectNode);
     this.LiteGraph.registerNodeType("merge/Merge", MergeNode);
     this.LiteGraph.registerNodeType("merge/AudioMerge", AudioMixerNode);
+    this.LiteGraph.registerNodeType("trigger/ButtonTrigger", ButtonTriggerNode);
   }
 
   getLiteGraph() {
     return this.LiteGraph;
   }
 }
+
+const instance = new NodeRegister();
+
+export default instance;
