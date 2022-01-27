@@ -28,7 +28,7 @@ ContrastEffectNode.prototype.onExecute = function () {
     outputPixelArray.data[i] = contrastFactor * (pixelArray.data[i] - 128.0) + 128.0;
     outputPixelArray.data[i + 1] = contrastFactor * (pixelArray.data[i + 1] - 128.0) + 128.0;
     outputPixelArray.data[i + 2] = contrastFactor * (pixelArray.data[i + 2] - 128.0) + 128.0;
-    outputPixelArray.data[i + 3] = 255;
+    outputPixelArray.data[i + 3] = pixelArray.data[i + 3];
   }
   this.setOutputData(0, outputPixelArray);
 };

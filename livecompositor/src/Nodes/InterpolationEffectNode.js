@@ -27,7 +27,7 @@ InterpolationEffectNode.prototype.onExecute = function () {
     outputPixelArray.data[i] = colour;
     outputPixelArray.data[i + 1] = colour;
     outputPixelArray.data[i + 2] = colour;
-    outputPixelArray.data[i + 3] = 255;
+    outputPixelArray.data[i + 3] = pixelArray.data[i + 3];
   }
   this.setOutputData(0, outputPixelArray);
 };

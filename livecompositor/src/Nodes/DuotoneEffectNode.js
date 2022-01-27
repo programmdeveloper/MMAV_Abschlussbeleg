@@ -44,7 +44,7 @@ DuotoneEffectNode.prototype.onExecute = function () {
     outputPixelArray.data[i] = this.gradient[pixelArray.data[i]].red;
     outputPixelArray.data[i + 1] = this.gradient[pixelArray.data[i + 1]].green;
     outputPixelArray.data[i + 2] = this.gradient[pixelArray.data[i + 2]].blue;
-    outputPixelArray.data[i + 3] = 255;
+    outputPixelArray.data[i + 3] = pixelArray.data[i + 3];
   }
   this.setOutputData(0, outputPixelArray);
 };

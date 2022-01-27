@@ -24,7 +24,7 @@ GrayscaleEffectNode.prototype.onExecute = function () {
     outputPixelArray.data[i] = count / 3;
     outputPixelArray.data[i + 1] = count / 3;
     outputPixelArray.data[i + 2] = count / 3;
-    outputPixelArray.data[i + 3] = 255;
+    outputPixelArray.data[i + 3] = pixelArray.data[i + 3];
   }
   this.setOutputData(0, outputPixelArray);
 };
