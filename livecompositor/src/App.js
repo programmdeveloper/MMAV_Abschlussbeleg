@@ -38,7 +38,7 @@ function App() {
 
               <header className="App-header">
                   <img src={logo} className="App-logo" alt="logo" />
-                  <h2>Abschlussbeleg</h2>
+                  <h2>Lifecompositor</h2>
               </header>
 
               <div className='App-interface'>
@@ -47,11 +47,13 @@ function App() {
                   <div className='App-interface-output'>
                       <OutputView />
                       <Divider vertical={false} />
+                      <h1>Mischpult</h1>
                       <div className='Menu'>
                           <div className='Border'>
                               <AudioExternalControl />
                           </div>
-                          <div className='Border'>
+                          
+                          <div className='BorderR'>
                               <RecordComponent />
                           </div>
                       </div>

@@ -1,5 +1,6 @@
 .App {
     text-align: center;
+    color: white;
 }
 
 .App-logo {
@@ -12,6 +13,8 @@
         animation: App-logo-spin infinite 20s linear;
     }
 }
+
+
 
 .App-header {
     background-color: #282c34;
@@ -31,23 +34,30 @@
 .App-interface-output {
     display: flex;
     flex-direction: column;
-    background: #848484;
+    background: #586674;
 }
 
 .Menu {
     display: flex;
-    background: #D8D8D8;
+    background: #586674;
     flex-direction: row;
     align-items: center;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .Record {
     margin: 1%;
+    display: flex;
+    flex-direction: column;
 }
 
 .Border {
+    border: 1px solid #2497E3;
+    padding: 1%;
+}
+
+.BorderR {
+    padding: 1%;
+    width: 40%;
     border: 1px solid #2497E3;
 }
 
@@ -68,6 +78,24 @@
     border-radius: 10px 10px 10px 10px;
 }
 
+.ButtonR {
+    background-color: #0000CD;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    font-size: 16px;
+    margin: 4px 2px;
+    opacity: 0.6;
+    transition: 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-radius: 10px 10px 10px 10px;
+    width: 100%;
+}
+
 .Button:hover {
     opacity: 1
 }
@@ -80,6 +108,7 @@
     box-sizing: border-box;
     border-radius: 10px 10px 10px 10px;
     background: white;
+    color: black;
 }
 
 .Checkbox {
@@ -88,6 +117,7 @@
     border-radius: 5px 5px 5px 5px;
     margin: 1%;
     background: white;
+    color: black;
 }
 
 .checkbox {
