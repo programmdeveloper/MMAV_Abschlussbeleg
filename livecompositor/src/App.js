@@ -48,8 +48,12 @@ function App() {
                       <OutputView />
                       <Divider vertical={false} />
                       <div className='Menu'>
-                          <AudioExternalControl />
-                          <RecordComponent />
+                          <div className='Border'>
+                              <AudioExternalControl />
+                          </div>
+                          <div className='Border'>
+                              <RecordComponent />
+                          </div>
                       </div>
                   </div>
               </div>

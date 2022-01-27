@@ -15,7 +15,7 @@
 
 .App-header {
     background-color: #282c34;
-    height: 50px;
+    height: 40px;
     display: flex;
     align-self: flex-start;
     align-items: center;
@@ -31,11 +31,24 @@
 .App-interface-output {
     display: flex;
     flex-direction: column;
+    background: #848484;
 }
 
 .Menu {
     display: flex;
+    background: #D8D8D8;
+    flex-direction: row;
     align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.Record {
+    margin: 1%;
+}
+
+.Border {
+    border: 1px solid #2497E3;
 }
 
 .Button {
@@ -66,6 +79,7 @@
     border: 1px solid #2497E3;
     box-sizing: border-box;
     border-radius: 10px 10px 10px 10px;
+    background: white;
 }
 
 .Checkbox {
@@ -73,6 +87,7 @@
     box-sizing: border-box;
     border-radius: 5px 5px 5px 5px;
     margin: 1%;
+    background: white;
 }
 
 .checkbox {
@@ -194,7 +209,6 @@ input[type=range] {
     align-items: flex-end;
     justify-content: center;
     color: white;
-    position: absolute;
     bottom: 0;
     width: 100%;
 }

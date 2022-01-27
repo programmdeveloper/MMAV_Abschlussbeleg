@@ -15,7 +15,7 @@ const AudioExternalControl = () => {
     }
 
     return (
-        <div>
+        <div className = "Audio">
             <input type="file" id="uploadButton" className="Button" onChange={handleFileInput} accept="audio/*" />
             <button id="playButton" className = "Button" onClick={() => audioMixingInstance.playExternal()}>Play</button>
             <button id="pauseButton" className="Button" onClick={() => audioMixingInstance.pauseExternal()}>Pause</button>
