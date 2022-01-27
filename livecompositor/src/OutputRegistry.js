@@ -14,7 +14,7 @@ class OutputRegistry {
 
     /**
      * register output node to active-observer
-     *
+     */
     addOutputNode(outputNode) {
         this.outputs.push(outputNode);
     }

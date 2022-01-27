@@ -5,7 +5,6 @@ import NodeGraph from './Components/NodeGraph';
 import OutputView from './Components/OutputView';
 import RecordComponent from './Components/RecordComponent';
 import AudioExternalControl from "./Components/AudioExternalControl";
-import Divider from './Components/Divider';
 
 export var REDRAWOUT = false;
 export var GRAPHWIDTH = 0.5;
@@ -14,21 +13,21 @@ export var OUTHEIGHT = 0.5;
 function App() {
 
     React.useEffect(() => {
+        console.log(document.getElementById("Menu").clientHeight);
 
         function handleResize() {
             var outputView = document.getElementById("main-output-view");
-            var outputViewContext = outputView.getContext("2d");
             var graph = document.getElementById("node-graph-canvas");
-            var graphContext = graph.getContext("2d");
 
-            outputView.width = document.body.offsetWidth * (1-GRAPHWIDTH) - 3;
-            outputView.height = window.innerHeight * (OUTHEIGHT);
-            graph.width = document.body.offsetWidth * GRAPHWIDTH - 3;
-            graph.height = document.documentElement.clientHeight - 90;
+            outputView.width = Math.floor(document.body.clientWidth * (1-GRAPHWIDTH));
+            outputView.height = window.innerHeight * (OUTHEIGHT) - 4;
+            graph.width = Math.floor(document.body.clientWidth * GRAPHWIDTH);
+            graph.height = document.getElementById("App-interface-output").clientHeight - 4;
             graph.dispatchEvent(new Event('mousemove'));
         }
 
         window.addEventListener('resize', handleResize)
+        handleResize();
 
     }, [""])
 
@@ -43,12 +42,10 @@ function App() {
 
               <div className='App-interface'>
                   <NodeGraph />
-                  <Divider vertical={true} />
-                  <div className='App-interface-output'>
-                      <OutputView />
-                      <Divider vertical={false} />
-                      <h1>Mischpult</h1>
-                      <div className='Menu'>
+                  <div className='App-interface-output' id="App-interface-output">
+                      <OutputView id="OutputView"/>
+                      {/* <h1>Mischpult</h1> */}
+                      <div className='Menu' id="Menu">
                           <div className='Border'>
                               <AudioExternalControl />
                           </div>
@@ -61,7 +58,7 @@ function App() {
               </div>
 
               <footer className="App-footer">
-                  <p>Im Ramen des Abschlussbelegs Audio und Video</p>
+                  <p>Im Ramen des Abschlussbelegs Audio- und Videotechnik</p>
               </footer>
           </div>
     </div>

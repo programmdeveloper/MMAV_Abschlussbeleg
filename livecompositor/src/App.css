@@ -1,3 +1,5 @@
+
+
 .App {
     text-align: center;
     color: white;
@@ -41,7 +43,7 @@
     display: flex;
     background: #586674;
     flex-direction: row;
-    align-items: center;
+    align-items: stretch;
 }
 
 .Record {
