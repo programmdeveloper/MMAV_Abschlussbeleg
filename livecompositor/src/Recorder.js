@@ -1,5 +1,8 @@
 import audioMixController from './AudioMixingController';
 
+/**
+ * Class for handling recording of outputs (Singleton)
+ */
 class Recorder {
     constructor() {
         if (!Recorder._instance) {
@@ -14,6 +17,12 @@ class Recorder {
         return Recorder._instance;
     }
 
+    /**
+     * Set framerate for recording
+     * @param {*} framerate 
+     * 
+     * @throws Exception on invalid Framerate
+     */
     setFramerate(framerate) {
         if(framerate < 0 || framerate > 250) {
             throw "Invalid Framerate"
@@ -21,6 +30,10 @@ class Recorder {
         this.framerate = framerate;
     }
 
+    /**
+     * Set which Canvas to record
+     * @param {*} canvas 
+     */
     setCanvasToRecord(canvas) {
         this.canvasToRecord = canvas;
     }
@@ -36,6 +49,9 @@ class Recorder {
         this.blobUrl = window.URL.createObjectURL(superBuffer);
     }
 
+    /**
+     * Start recording of outputs
+     */
     startRecord() {
         if(this.canvasToRecord === null) {
             throw "No active output node."
@@ -83,6 +99,9 @@ class Recorder {
         }
     }
     
+    /**
+     * stop recording of output
+     */
     stopRecord() {
         this.recording = false;
         try {
@@ -92,6 +111,11 @@ class Recorder {
         }
     }
 
+    /**
+     * download recorded video and audio as .webm
+     * 
+     * @throws Exception if no records are available for download.
+     */
     download() {
         if(this.recordedChunks.length === 0) {
             throw "No records to download."

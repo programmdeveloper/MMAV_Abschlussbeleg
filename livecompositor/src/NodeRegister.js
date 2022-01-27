@@ -14,6 +14,9 @@ import { AudioOutputNode } from "./Nodes/AudioOutputNode";
 import { AudioMixerNode } from "./Nodes/AudioMixerNode";
 import { ButtonTriggerNode } from "./Nodes/ButtonTriggerNode";
 
+/**
+ * Class for managing node registering
+ */
 class NodeRegister {
   constructor() {
     if (!NodeRegister._instance) {
@@ -23,6 +26,9 @@ class NodeRegister {
     return NodeRegister._instance;
   }
 
+  /**
+   * register nodes to be available in litegraph
+   */
   register() {
     this.LiteGraph.clearRegisteredTypes();
     //PUT NODES HERE TO REGISTER THEM AUTOMATICALLY
@@ -42,6 +48,10 @@ class NodeRegister {
     this.LiteGraph.registerNodeType("trigger/ButtonTrigger", ButtonTriggerNode);
   }
 
+  /**
+   * Get the litegraph instance.
+   * @returns litegraph instance
+   */
   getLiteGraph() {
     return this.LiteGraph;
   }

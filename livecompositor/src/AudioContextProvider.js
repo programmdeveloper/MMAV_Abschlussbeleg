@@ -1,3 +1,6 @@
+/**
+ * Class for handling audio context globally (Singleton)
+ */
 class AudioContextProvider {
     constructor() {
         if (!AudioContextProvider._instance) {
@@ -13,10 +16,17 @@ class AudioContextProvider {
         return AudioContextProvider._instance;
     }
 
+    /**
+     * Get the main audio context.
+     * @returns audio context
+     */
     getAudioContext() {
         return this.audioContext;
     }
 
+    /**
+     * resume audio context, if paused (default policy on Chrome and Safari)
+     */
     resumeAudioContext() {
         if(this.audioContext.state == "suspended") {
             this.audioContext.resume();

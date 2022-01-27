@@ -1,5 +1,8 @@
 import audioContextProvider from "./AudioContextProvider";
 
+/**
+ * Class for handling audio (Singleton)
+ */
 class AudioMixingController {
     constructor() {
         if (!AudioMixingController._instance) {
@@ -29,10 +32,18 @@ class AudioMixingController {
         return AudioMixingController._instance;
     }
 
+    /**
+     * 
+     * @returns audio web api MediaStreamDestination
+     */
     getStreamOut() {
         return this.streamOut;
     }
 
+    /**
+     * Create Audio from audio file
+     * @param {*} file 
+     */
     uploadAudio(file) {
         this.clearExternalAudio();
         this.externalAudio = new Audio(URL.createObjectURL(file));
@@ -40,6 +51,9 @@ class AudioMixingController {
         this.externalAudioSource.connect(this.gainNodeExternal);
     }
 
+    /**
+     * remove externally uploaded audio
+     */
     clearExternalAudio() {
         try {
             this.externalAudioSource.disconnect(this.gainNodeExternal);
@@ -50,6 +64,9 @@ class AudioMixingController {
         this.externalAudioSource = undefined;
     }
 
+    /**
+     * play uploaded audio
+     */
     playExternal() {
         if(this.externalAudio != undefined && this.externalAudioSource != undefined) {
             this.externalAudio.play();
@@ -58,27 +75,45 @@ class AudioMixingController {
         }
     }
 
+    /**
+     * pause uploaded audio
+     */
     pauseExternal() {
         if (this.externalAudio != undefined && this.externalAudioSource != undefined) {
             this.externalAudio.pause();
         }
     }
 
+    /**
+     * Set volume of uploaded audio
+     * @param {*} value Volume
+     */
     adaptExternalVolume(value) {
         this.gainNodeExternal.gain.value = value;
     }
 
+    /**
+     * Set speed of uploaded audio
+     * @param {*} value Speed
+     */
     adaptSpeed(value) {
         this.externalAudio.playbackRate = value;
         document.getElementById('speed').value = value;
     }
 
+    /**
+     * Set volume of node audio
+     * @param {*} value Volume
+     */
     adaptNodeVolume(value) {
         if(this.nodeEditorAudioSource !== null) {
             this.gainNode.gain.value = value;
         }
     }
-
+    /**
+     * Set master volume
+     * @param {*} value Volume
+     */
     adaptAllVolume(value) {
         if(this.nodeEditorAudioSource !== null) {
             this.gainNode.gain.value = value;
@@ -86,6 +121,10 @@ class AudioMixingController {
         this.gainNodeExternal.gain.value = value;
     }
 
+    /**
+     * Mute uploaded audio
+     * @param {*} value true or false
+     */
     muteExternal(value) {
         if (document.getElementById('muteExternal').checked === false) {
             this.gainNodeExternal.gain.value = value;
@@ -94,6 +133,10 @@ class AudioMixingController {
         }
     }
 
+    /**
+     * Mute node audio
+     * @param {*} value true or false
+     */
     muteNode(value) {
         if(this.nodeEditorAudioSource !== null) {
             if (document.getElementById('muteNode').checked === false) {
@@ -104,6 +147,10 @@ class AudioMixingController {
         }
     }
 
+    /**
+     * Set the source of the audio stream that comes from nodeeditor
+     * @param {*} audioNode active audio output node
+     */
     setNodeAudioSource(audioNode) {
         try {
             this.nodeEditorAudioSource.disconnect(this.gainNode);
