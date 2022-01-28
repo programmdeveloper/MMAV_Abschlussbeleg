@@ -1,8 +1,8 @@
+# Dokumentation
+
+## Livecompositor
+
 ![](media/image1.png)
-
-#Dokumentation
-
-##Livecompositor
 
 Philipp Nitsche (573651), Georgios Padopoulos (572727), Timo Schnorz
 (577603), Aleksej Hinze (580341) \| Multimedia: Audio und Video \|
