@@ -49,6 +49,24 @@ class Recorder {
         this.blobUrl = window.URL.createObjectURL(superBuffer);
     }
 
+    _setRecordButtonRecording(isRecording) {
+        let button = document.getElementById("start-record-btn");
+        let buttonTextOriginal = button.innerHTML;
+        if(isRecording) {
+            button.style.backgroundColor = "red";
+            if(this.recording === false) {
+                let buttonTextModified = buttonTextOriginal.replace("Record", "Recording...")
+                button.innerHTML = buttonTextModified;
+            }
+        } else {
+            button.style.backgroundColor = "#0000CD";
+            if (this.recording === true) {
+                let buttonTextModified = buttonTextOriginal.replace("Recording...", "Record")
+                button.innerHTML = buttonTextModified;
+            }
+        }
+    }
+
     /**
      * Start recording of outputs
      */
@@ -58,6 +76,7 @@ class Recorder {
         }
 
         if(this.recording === false) {
+            this._setRecordButtonRecording(true);
             this.recording = true;
             var videoStream = this.canvasToRecord.captureStream(this.framerate)
             var audioStream = audioMixController.getStreamOut();
@@ -103,6 +122,7 @@ class Recorder {
      * stop recording of output
      */
     stopRecord() {
+        this._setRecordButtonRecording(false);
         this.recording = false;
         try {
             this.mediaRecorder.stop()
