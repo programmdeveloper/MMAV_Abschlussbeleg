@@ -1,38 +1,294 @@
+
+
 .App {
-  text-align: center;
+    text-align: center;
+    color: white;
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+    height: 3rem;
+    pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
 }
 
+
+
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    height: 40px;
+    display: flex;
+    align-self: flex-start;
+    align-items: center;
+    color: white;
+}
+
+.App-interface {
+    width:100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.App-interface-output {
+    display: flex;
+    flex-direction: column;
+    background: #586674;
+}
+
+.Menu {
+    width:100%;
+    display: flex;
+    background: #586674;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.Record {
+    margin: 1%;
+    display: flex;
+    flex-direction: column;
+}
+
+.Border {
+    border: 2px solid #2497E3;
+    padding: 2%;
+    flex-grow: 1;
+}
+
+.BorderR {
+    padding: 2%;
+    width: 44%;
+    border: 2px solid #2497E3;
+    flex-grow: 1;
+}
+
+#play-pause-button-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row
+}
+
+.Button {
+    background-color: #0000CD;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    font-size: 16px;
+    margin: 4px 2px;
+    opacity: 0.6;
+    transition: 0.3s;
+    flex-grow: 1;
+    /* display: inline-block; */
+    text-decoration: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-radius: 10px 10px 10px 10px;
+}
+
+.ButtonR {
+    background-color: #0000CD;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    font-size: 16px;
+    margin: 4px 2px;
+    opacity: 0.6;
+    transition: 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-radius: 10px 10px 10px 10px;
+    width: 100%;
+}
+
+input[type=range]:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.Button:hover {
+    opacity: 1
+}
+
+.ButtonR:hover {
+    opacity: 1
+}
+
+.Volume {
+    display: flex;
+    flex-direction: row;
+    margin: 1%;
+    border: 1px solid #2497E3;
+    box-sizing: border-box;
+    border-radius: 10px 10px 10px 10px;
+    background: white;
+    color: black;
+}
+
+.Checkbox {
+    border: 1px solid #2497E3;
+    box-sizing: border-box;
+    border-radius: 10px 10px 10px 10px;
+    margin: 1%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    padding-left: 1%;
+    padding-right: 1%;
+    background: white;
+    color: black;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row
+}
+
+.checkbox {
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+.Slider-beschreibung {
+    width: 30%;
+    margin: 1%;
+}
+
+input[type=range] {
+    height: 25px;
+    -webkit-appearance: none;
+    margin: 10px 0;
+    width: 70%;
+}
+
+    input[type=range]:focus {
+        outline: none;
+    }
+
+    input[type=range]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 5px;
+        cursor: pointer;
+        animate: 0.2s;
+        box-shadow: 0px 0px 0px #000000;
+        background: #2497E3;
+        border-radius: 1px;
+        border: 0px solid #000000;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+        box-shadow: 0px 0px 0px #000000;
+        border: 1px solid #2497E3;
+        height: 18px;
+        width: 18px;
+        border-radius: 25px;
+        background: #A1D0FF;
+        cursor: pointer;
+        -webkit-appearance: none;
+        margin-top: -7px;
+    }
+
+    input[type=range]:focus::-webkit-slider-runnable-track {
+        background: #2497E3;
+    }
+
+    input[type=range]::-moz-range-track {
+        width: 100%;
+        height: 5px;
+        cursor: pointer;
+        animate: 0.2s;
+        box-shadow: 0px 0px 0px #000000;
+        background: #2497E3;
+        border-radius: 1px;
+        border: 0px solid #000000;
+    }
+
+    input[type=range]::-moz-range-thumb {
+        box-shadow: 0px 0px 0px #000000;
+        border: 1px solid #2497E3;
+        height: 18px;
+        width: 18px;
+        border-radius: 25px;
+        background: #A1D0FF;
+        cursor: pointer;
+    }
+
+    input[type=range]::-ms-track {
+        width: 100%;
+        height: 5px;
+        cursor: pointer;
+        animate: 0.2s;
+        background: transparent;
+        border-color: transparent;
+        color: transparent;
+    }
+
+    input[type=range]::-ms-fill-lower {
+        background: #2497E3;
+        border: 0px solid #000000;
+        border-radius: 2px;
+        box-shadow: 0px 0px 0px #000000;
+    }
+
+    input[type=range]::-ms-fill-upper {
+        background: #2497E3;
+        border: 0px solid #000000;
+        border-radius: 2px;
+        box-shadow: 0px 0px 0px #000000;
+    }
+
+    input[type=range]::-ms-thumb {
+        margin-top: 1px;
+        box-shadow: 0px 0px 0px #000000;
+        border: 1px solid #2497E3;
+        height: 18px;
+        width: 18px;
+        border-radius: 25px;
+        background: #A1D0FF;
+        cursor: pointer;
+    }
+
+    input[type=range]:focus::-ms-fill-lower {
+        background: #2497E3;
+    }
+
+    input[type=range]:focus::-ms-fill-upper {
+        background: #2497E3;
+    }
+
+    input[type=number] {
+        height: 40px;
+        border-radius:10px;
+        font-size:16px;
+        border:1px solid #2497E3;
+    }
+
+.App-footer {
+    background-color: #282c34;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    color: white;
+    bottom: 0;
+    width: 100%;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
